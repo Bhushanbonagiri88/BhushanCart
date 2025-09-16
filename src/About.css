@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+.bhushan {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.col-md-4 {
+  transition: transform 0.3s ease;
+}
+
+.col-md-4:hover {
+  transform: scale(1.05);
+}
+
+h4 {
+  color: #0d47a1;
+  font-weight: 600;
+}
+

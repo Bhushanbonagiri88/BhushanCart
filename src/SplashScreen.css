@@ -1,0 +1,57 @@
+/* Fullscreen container with gradient background */
+.splash-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(-45deg, #0072ff, #00c6ff);
+  background-size: 400% 400%;
+  animation: gradientBG 8s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 9999;
+  flex-direction: column;
+}
+
+/* 🚴 Delivery boy */
+.bike {
+  position: absolute;
+  bottom: 15%;
+  width: 200px;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+}
+
+/* 🛍️ Logo */
+.logo {
+  width: 250px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3))
+          drop-shadow(0 0 25px rgba(255, 255, 255, 0.6));
+  border-radius: 12px;
+}
+
+/* ✨ Tagline */
+.tagline {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 🌈 Gradient background animation */
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

@@ -1,0 +1,22 @@
+.contactus-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 120px); /* full viewport minus header */
+  padding-top: 120px; /* adjust if header is fixed and overlaying */
+  box-sizing: border-box;
+}
+
+.contactus-wrapper {
+  width: 100%;
+  max-width: 900px;
+  padding: 20px; /* optional for spacing inside */
+}
+
+.contactus-card {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* subtle shadow */
+  background-color: #fff;
+  padding: 20px;
+}
