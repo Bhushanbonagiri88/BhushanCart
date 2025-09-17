@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 120px); /* full viewport minus header */
-  padding-top: 120px; /* adjust if header is fixed and overlaying */
+  min-height: 100vh;
+  padding-top: 20px; /* exact header+navbar height */
   box-sizing: border-box;
 }
 

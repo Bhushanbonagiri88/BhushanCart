@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   Routes,
@@ -6,18 +7,17 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import { useSelector } from "react-redux";
-import SplashScreen from "./SplashScreen";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "./Store";
 
-// Pages
+// Pages and components
+import "./App.css";
+import SplashScreen from "./SplashScreen";
 import Home from "./Home";
 import Veg from "./Veg";
 import Dairy from "./Dairy";
 import Groceries from "./Groceries";
 import Electronics from "./Electronics";
-import MensClothing from "./MensClothing";
-import WomensClothing from "./WomensClothing";
-import KidsWare from "./KidsWare";
 import Slippers from "./Slippers";
 import Shoes from "./Shoes";
 import Cart from "./Cart";
@@ -37,15 +37,35 @@ import Laptops from "./Laptops";
 import Cameras from "./Cameras";
 import SmartHome from "./SmartHome";
 
-import "./App.css";
+// Clothing sub-pages
+import Clothing from "./Clothing";
+import MensClothing from "./MensClothing";
+import WomensClothing from "./WomensClothing";
+import KidsWare from "./KidsWare";
+
+
+// Sports sub-pages
+import Sports from "./Sports";
+import FootBall from "./FootBall";
+import Cricket from "./Cricket";
+import Footwear from "./Footwear";
+import Kitchen from "./Kitchen";
+
+
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+  const [showSplash, setShowSplash] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
-  // Redux values
+  // ✅ Redux states
+  const { isAuthenticated, currentUsername } = useSelector(
+    (state) => state.registerUser
+  );
   const cartItems = useSelector((state) => state.cart);
   const wishlistItems = useSelector((state) => state.wishlist);
 
@@ -58,34 +78,35 @@ function App() {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Electronics", path: "/electronics" },
-    { name: "Men's Clothing", path: "/mensclothing" },
-    { name: "Women's Clothing", path: "/womensclothing" },
-    { name: "Kids Wear", path: "/kidsware" },
-    { name: "Slippers", path: "/slippers" },
-    { name: "Shoes", path: "/shoes" },
-    { name: "Vegetables", path: "/veg" },
-    { name: "Dairy", path: "/dairy" },
-    { name: "Other Groceries", path: "/groceries" },
+    { name: "Clothing" , path: "/clothing" },
+    { name: "Footware", path: "/footware" },
+    { name: "Sports", path:"/sports"},
+    { name: "Kitchen Products", path: "/kitchen" },
     { name: "Orders", path: "/orders" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];
 
-  // Add a state to control navbar collapse on mobile
-  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/login");
+  };
+
+   useEffect(() => {
+    const hasSeenSplash = localStorage.getItem("hasSeenSplash");
+    if (!hasSeenSplash) setShowSplash(true);
+  }, []);
 
   useEffect(() => {
-    // Close the nav when route changes (helpful on mobile)
     setIsNavCollapsed(true);
   }, [location.pathname]);
 
-  if (loading) {
-    return <SplashScreen onFinish={() => setLoading(false)} />;
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
-
   return (
     <>
-      {/* 🔹 Header */}
+      {/* Header */}
       <header className="py-2 shadow-sm fixed-top bg-white">
         <div className="container d-flex align-items-center justify-content-between">
           <Link to="/" className="d-flex align-items-center text-decoration-none">
@@ -132,22 +153,33 @@ function App() {
               )}
             </Link>
 
-            <Link to="/login" className="btn btn-outline-dark">
-              🔑
-            </Link>
-            <Link to="/register" className="btn btn-outline-dark">
-              👤
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <span className="me-2 fw-semibold">Hello, {currentUsername}</span>
+                <button onClick={handleLogout} className="btn btn-outline-dark">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="btn btn-outline-dark">
+                  🔑
+                </Link>
+                <Link to="/register" className="btn btn-outline-dark">
+                  👤
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
 
-      {/* 🔹 Navbar */}
+      {/* Navbar */}
       <nav
         className="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm"
         style={{
           background: "linear-gradient(90deg, #6a11cb, #2575fc)",
-          top: "70px",
+          top: "65px",
         }}
       >
         <div className="container-fluid">
@@ -171,7 +203,9 @@ function App() {
                 <li className="nav-item" key={i}>
                   <Link
                     className={`nav-link fw-semibold px-3 py-2 ${
-                      location.pathname === link.path ? "active-nav bg-light text-dark rounded" : "text-white"
+                      location.pathname === link.path
+                        ? "active-nav bg-light text-dark rounded"
+                        : "text-white"
                     }`}
                     to={link.path}
                     onClick={() => setIsNavCollapsed(true)}
@@ -185,19 +219,22 @@ function App() {
         </div>
       </nav>
 
-      {/* 🔹 Main Content */}
+      {/* Main Content */}
       <div style={{ marginTop: "140px", padding: "1rem" }}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/veg" element={<Veg />} />
-          <Route path="/dairy" element={<Dairy />} />
-          <Route path="/groceries" element={<Groceries />} />
+          <Route path="/kitchen" element={<Kitchen/>}/>
+          <Route path="/kitchen/veg" element={<Veg />} />
+          <Route path="/kitchen/dairy" element={<Dairy />} />
+          <Route path="/kitchen/groceries" element={<Groceries />} />
           <Route path="/electronics" element={<Electronics />} />
-          <Route path="/mensclothing" element={<MensClothing />} />
-          <Route path="/womensclothing" element={<WomensClothing />} />
-          <Route path="/kidsware" element={<KidsWare />} />
-          <Route path="/slippers" element={<Slippers />} />
-          <Route path="/shoes" element={<Shoes />} />
+          <Route path="/clothing" element={<Clothing />} />
+          <Route path="/clothing/mensclothing" element={<MensClothing />} />
+          <Route path="/clothing/womensclothing" element={<WomensClothing />} />
+          <Route path="/clothing/kidsware" element={<KidsWare />} />
+          <Route path="/footware" element={<Footwear />} />
+          <Route path="/footware/slippers" element={<Slippers />} />
+          <Route path="/footware//shoes" element={<Shoes />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/orders" element={<OrdersHistory />} />
@@ -211,6 +248,9 @@ function App() {
           <Route path="/electronics/laptops" element={<Laptops />} />
           <Route path="/electronics/cameras" element={<Cameras />} />
           <Route path="/electronics/smarthome" element={<SmartHome />} />
+          <Route path="/sports" element={<Sports />} />
+          <Route path="/sports/cricket" element={<Cricket />} />
+          <Route path="/sports/football" element={<FootBall />} />
           <Route path="/splash" element={<SplashScreen />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
@@ -220,3 +260,4 @@ function App() {
 }
 
 export default App;
+

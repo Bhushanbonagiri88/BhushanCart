@@ -1,4 +1,5 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice, current } from "@reduxjs/toolkit";
+
 
 // ---------------- Products Slice ----------------
 const productSlice = createSlice({
@@ -231,33 +232,158 @@ dairy: [
 });
 
 
-// // ---------------- Local Storage Helpers ----------------
-// const loadState = (key, defaultState) => {
-//   try {
-//     const serializedState = localStorage.getItem(key);
-//     if (serializedState === null) {
-//       return defaultState;
-//     }
-//     return JSON.parse(serializedState);
-//   } catch (e) {
-//     console.error(`Error loading ${key} from localStorage`, e);
-//     return defaultState;
-//   }
-// };
 
-// const saveState = (key, state) => {
-//   try {
-//     const serializedState = JSON.stringify(state);
-//     localStorage.setItem(key, serializedState);
-//   } catch (e) {
-//     console.error(`Error saving ${key} to localStorage`, e);
-//   }
-// };
+// // ---------------- Initial States ----------------
+// const initialStateCart = JSON.parse(localStorage.getItem("cart")) || [];
+// const initialStateWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+// const initialStateOrders = JSON.parse(localStorage.getItem("orders")) || [];
+// const initialStateUser =
+//   JSON.parse(localStorage.getItem("registerUser")) || {
+//     users: [],
+//     currentUsername: null,
+//     isAuthenticated: false,
+//   };
+
+// // ---------------- Cart Slice ----------------
+// const cartSlice = createSlice({
+//   name: "cart",
+//   initialState: initialStateCart,
+//   reducers: {
+//     addToCart(state, action) {
+//       const item = state.find((product) => product.id === action.payload.id);
+//       if (item) {
+//         item.quantity += 1;
+//       } else {
+//         state.push({ ...action.payload, quantity: 1 });
+//       }
+//     },
+//     removeFromCart(state, action) {
+//       return state.filter((item) => item.id !== action.payload.id);
+//     },
+//     increaseItem(state, action) {
+//       const index = state.findIndex((item) => item.id === action.payload.id);
+//       if (index !== -1) state[index].quantity += 1;
+//     },
+//     decreaseItem(state, action) {
+//       const index = state.findIndex((item) => item.id === action.payload.id);
+//       if (index !== -1) {
+//         if (state[index].quantity > 1) {
+//           state[index].quantity -= 1;
+//         } else {
+//           state.splice(index, 1);
+//         }
+//       }
+//     },
+//     clearCart() {
+//       return [];
+//     },
+//   },
+// });
+
+// // ---------------- Wishlist Slice ----------------
+// const wishlistSlice = createSlice({
+//   name: "wishlist",
+//   initialState: initialStateWishlist,
+//   reducers: {
+//     addToWishlist(state, action) {
+//       const exists = state.find((item) => item.id === action.payload.id);
+//       if (!exists) {
+//         state.push(action.payload);
+//       }
+//     },
+//     removeFromWishlist(state, action) {
+//       return state.filter((item) => item.id !== action.payload.id);
+//     },
+//     clearWishlist() {
+//       return [];
+//     },
+//   },
+// });
+
+// // ---------------- Orders Slice ----------------
+// const ordersSlice = createSlice({
+//   name: "orders",
+//   initialState: initialStateOrders,
+//   reducers: {
+//     addOrder(state, action) {
+//       state.push(action.payload);
+//     },
+//   },
+// });
+
+// // ---------------- User Slice ----------------
+// const registerSlice = createSlice({
+//   name: "registerUser",
+//   initialState: initialStateUser,
+//   reducers: {
+//     register: (state, action) => {
+//       // action.payload = { username, email, password }
+//       state.users.push(action.payload);
+//     },
+//     loginUser: (state, action) => {
+//       const { username, password } = action.payload;
+//       const user = state.users.find(
+//         (u) => u.username === username && u.password === password
+//       );
+
+//       if (user) {
+//         state.currentUsername = user.username;
+//         state.isAuthenticated = true;
+//       } else {
+//         state.currentUsername = null;
+//         state.isAuthenticated = false;
+//       }
+//     },
+//     logoutUser: (state) => {
+//       state.isAuthenticated = false;
+//       state.currentUsername = null;
+//     },
+//   },
+// });
+
+// // ---------------- Store ----------------
+// const store = configureStore({
+//   reducer: {
+//     products: productSlice.reducer,
+//     cart: cartSlice.reducer,
+//     wishlist: wishlistSlice.reducer,
+//     orders: ordersSlice.reducer,
+//     registerUser: registerSlice.reducer, // ✅ added user slice
+//   },
+// });
+
+// // ---------------- Persist to LocalStorage ----------------
+// store.subscribe(() => {
+//   const state = store.getState();
+//   localStorage.setItem("cart", JSON.stringify(state.cart));
+//   localStorage.setItem("orders", JSON.stringify(state.orders));
+//   localStorage.setItem("wishlist", JSON.stringify(state.wishlist));
+//   localStorage.setItem("registerUser", JSON.stringify(state.registerUser)); // ✅ save users too
+// });
+
+// // ---------------- Exports ----------------
+// export const { addToCart, removeFromCart, increaseItem, decreaseItem, clearCart } =
+//   cartSlice.actions;
+// export const { addToWishlist, removeFromWishlist, clearWishlist } =
+//   wishlistSlice.actions;
+// export const { addOrder } = ordersSlice.actions;
+// export const { setProducts } = productSlice.actions;
+// export const { register: registerUser, loginUser, logoutUser } = registerSlice.actions;
+// Store.js
+
 
 // ---------------- Initial States ----------------
-const initialStateCart = JSON.parse(localStorage.getItem("cart"))||[];
-const initialStateWishlist =JSON.parse(localStorage.getItem("wishlist"))||[];
-const initialStateOrders = JSON.parse(localStorage.getItem("orders"))||[];
+const initialStateCart = JSON.parse(localStorage.getItem("cart")) || [];
+const initialStateWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+const initialStateOrders = JSON.parse(localStorage.getItem("orders")) || [];
+const initialStateUser =
+  JSON.parse(localStorage.getItem("registerUser")) || {
+    users: [],
+    currentUsername: null,
+    isAuthenticated: false,
+  };
+
+
 
 // ---------------- Cart Slice ----------------
 const cartSlice = createSlice({
@@ -265,7 +391,7 @@ const cartSlice = createSlice({
   initialState: initialStateCart,
   reducers: {
     addToCart(state, action) {
-      const item = state.find(product => product.id === action.payload.id);
+      const item = state.find((product) => product.id === action.payload.id);
       if (item) {
         item.quantity += 1;
       } else {
@@ -273,14 +399,14 @@ const cartSlice = createSlice({
       }
     },
     removeFromCart(state, action) {
-      return state.filter(item => item.id !== action.payload.id);
+      return state.filter((item) => item.id !== action.payload.id);
     },
     increaseItem(state, action) {
-      const index = state.findIndex(item => item.id === action.payload.id);
+      const index = state.findIndex((item) => item.id === action.payload.id);
       if (index !== -1) state[index].quantity += 1;
     },
     decreaseItem(state, action) {
-      const index = state.findIndex(item => item.id === action.payload.id);
+      const index = state.findIndex((item) => item.id === action.payload.id);
       if (index !== -1) {
         if (state[index].quantity > 1) {
           state[index].quantity -= 1;
@@ -291,8 +417,8 @@ const cartSlice = createSlice({
     },
     clearCart() {
       return [];
-    }
-  }
+    },
+  },
 });
 
 // ---------------- Wishlist Slice ----------------
@@ -301,31 +427,77 @@ const wishlistSlice = createSlice({
   initialState: initialStateWishlist,
   reducers: {
     addToWishlist(state, action) {
-      const exists = state.find(item => item.id === action.payload.id);
+      const exists = state.find((item) => item.id === action.payload.id);
       if (!exists) {
         state.push(action.payload);
       }
     },
     removeFromWishlist(state, action) {
-      return state.filter(item => item.id !== action.payload.id);
+      return state.filter((item) => item.id !== action.payload.id);
     },
     clearWishlist() {
       return [];
-    }
-  }
+    },
+  },
 });
 
 // ---------------- Orders Slice ----------------
+// const ordersSlice = createSlice({
+//   name: "orders",
+//   initialState: initialStateOrders,
+//   reducers: {
+//     addOrder(state, action) {
+//       state.push(action.payload);
+//     },
+//     clearOrders() {
+//       return [];
+//     },
+//   },
+// });
 const ordersSlice = createSlice({
   name: "orders",
   initialState: initialStateOrders,
   reducers: {
     addOrder(state, action) {
       state.push(action.payload);
-    }
-  }
+      localStorage.setItem("orders", JSON.stringify(state)); // persist
+    },
+    clearOrders(state) {
+      localStorage.setItem("orders", JSON.stringify([])); // clear localStorage
+      return [];
+    },
+  },
 });
 
+
+// ---------------- User Slice ----------------
+const registerSlice = createSlice({
+  name: "registerUser",
+  initialState: initialStateUser,
+  reducers: {
+    register: (state, action) => {
+      // action.payload = { username, email, password }
+      state.users.push(action.payload);
+    },
+    loginUser: (state, action) => {
+      const { username, password } = action.payload;
+      const user = state.users.find(
+        (u) => u.username === username && u.password === password
+      );
+      if (user) {
+        state.currentUsername = user.username;
+        state.isAuthenticated = true;
+      } else {
+        state.currentUsername = null;
+        state.isAuthenticated = false;
+      }
+    },
+    logoutUser: (state) => {
+      state.isAuthenticated = false;
+      state.currentUsername = null;
+    },
+  },
+});
 
 // ---------------- Store ----------------
 const store = configureStore({
@@ -333,22 +505,42 @@ const store = configureStore({
     products: productSlice.reducer,
     cart: cartSlice.reducer,
     wishlist: wishlistSlice.reducer,
-    orders: ordersSlice.reducer
-  }
+    orders: ordersSlice.reducer,
+    registerUser: registerSlice.reducer,
+  },
 });
-// ---------------- Subscribe to Save State Changes ----------------
+
+// ---------------- Persist to LocalStorage ----------------
 store.subscribe(() => {
   const state = store.getState();
-  localStorage.setItem("cart",JSON.stringify(state.cart));
-  localStorage.setItem("orders",JSON.stringify(state.orders));
-  localStorage.setItem("wishlist",JSON.stringify(state.wishlist));
+  localStorage.setItem("cart", JSON.stringify(state.cart));
+  localStorage.setItem("wishlist", JSON.stringify(state.wishlist));
+  localStorage.setItem("orders", JSON.stringify(state.orders));
+  localStorage.setItem("registerUser", JSON.stringify(state.registerUser));
 });
 
 // ---------------- Exports ----------------
-export const { addToCart, removeFromCart, increaseItem, decreaseItem, clearCart } = cartSlice.actions;
-export const { addToWishlist, removeFromWishlist, clearWishlist } = wishlistSlice.actions;
-export const { addOrder } = ordersSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  increaseItem,
+  decreaseItem,
+  clearCart,
+} = cartSlice.actions;
+
+export const { addToWishlist, removeFromWishlist, clearWishlist } =
+  wishlistSlice.actions;
+
+export const { addOrder, clearOrders } = ordersSlice.actions;
+
 export const { setProducts } = productSlice.actions;
+
+export const { register: registerUser, loginUser, logoutUser } = registerSlice.actions;
+
 
 
 export default store;
+
+
+
+

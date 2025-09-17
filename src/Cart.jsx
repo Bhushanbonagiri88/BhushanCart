@@ -5,7 +5,7 @@ import {
   increaseItem,
   removeFromCart,
   clearCart,
-} from "./store";
+} from "./Store";
 import { useState } from "react";
 import {
   buttonDiscount as calculateButtonDiscount,
@@ -15,6 +15,7 @@ import emailjs from "@emailjs/browser";
 import QRCode from "react-qr-code";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart);
@@ -64,9 +65,12 @@ function Cart() {
   };
 
   const finalPrice =
-    totalPrice - buttonDiscountAmount - (couponResult?.discountAmount || 0);
+  totalPrice - buttonDiscountAmount - (couponResult?.discountAmount || 0);
   const taxAmount = finalPrice * 0.18; // 18% GST
   const finalPriceWithTax = finalPrice + taxAmount;
+   const { isAuthenticated } = useSelector((state) => state.registerUser);
+   const dispatc = useDispatch();
+   const navigate = useNavigate();
 
   // ✅ Checkout + Send Email
   const handleCompletePurchase = () => {
@@ -77,8 +81,16 @@ function Cart() {
     if (!customerEmail) {
       toast.warning("⚠️ Please enter your email!");
       return;
-    }
-
+    }if (!isAuthenticated) {
+    toast.error("⚠️ Please login to complete your purchase.");
+    navigate("/login");
+  } else {
+    toast.success("🎉 Congratulations! Purchase complete.");
+    dispatch(clearCart());
+   setTimeout(() => {
+      navigate("/"); // or "/order-success"
+    }, 2000); // 2 seconds delay
+  }
     const purchaseDetails = {
       date: new Date().toLocaleString(),
       items: [...cartItems],

@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart, addToWishlist, removeFromWishlist } from "./store";
+import { addToCart, addToWishlist, removeFromWishlist } from "./Store";
 import Swal from "sweetalert2";
 
 function Mobiles() {
@@ -21,7 +21,7 @@ function Mobiles() {
 
   const handleWishlist = (item) => {
     if (wishlistItems.some((w) => w.id === item.id)) {
-      dispatch(removeFromWishlist(item.id));
+      dispatch(removeFromWishlist(item)); // ✅ Pass entire item
       Swal.fire({
         icon: "info",
         title: "Removed from Wishlist",
@@ -81,6 +81,22 @@ function Mobiles() {
           </div>
         ))}
       </div>
+
+      <style>
+        {`
+          .hover-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+          }
+          .btn-success:hover {
+            background-color: #28a745cc;
+          }
+          .btn-outline-danger:hover, .btn-danger:hover {
+            background-color: #ff4d4dcc;
+            color: white;
+          }
+        `}
+      </style>
     </div>
   );
 }

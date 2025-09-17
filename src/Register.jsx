@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-// import { registerUser } from "./store"; // ✅ import action
+import { registerUser } from "./Store";  // ✅ use the renamed export
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,34 +15,38 @@ function Register() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const password = watch("password"); // watch password to validate confirmPassword
+  const password = watch("password");
 
+  // -------- FORM SUBMIT --------
   const onSubmit = (data) => {
-    // save user into Redux store
-    dispatch(registerUser({ 
-      userName: data.username, 
-      email: data.email, 
-      password: data.password 
-    }));
+  dispatch(
+    registerUser({
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    })
+  );
 
-    toast.success("✅ Account created successfully!");
+
+    // 2️⃣ Show success message
+    toast.success("✅ Registered Successfully!", {
+      position: "top-right",
+    });
+
+    // 3️⃣ Redirect to login page
     navigate("/login");
   };
 
   return (
     <div
       className="d-flex justify-content-center align-items-center"
-      style={{
-        minHeight: "calc(100vh - 140px)",
-        marginTop: "140px",
-        width: "100vw",
-      }}
+      style={{ minHeight: "100vh" }}
     >
       <div
         className="card shadow-lg p-4"
         style={{ width: "400px", borderRadius: "15px" }}
       >
-        <h2 className="text-center mb-4 text-success">📝 Create Account</h2>
+        <h2 className="text-center mb-4 text-success">📝 Register</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Username */}
@@ -64,13 +68,7 @@ function Register() {
             <input
               type="email"
               className="form-control"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Enter a valid email",
-                },
-              })}
+              {...register("email", { required: "Email is required" })}
             />
             {errors.email && (
               <small className="text-danger">{errors.email.message}</small>
@@ -116,11 +114,7 @@ function Register() {
           </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            className="btn btn-success w-100 fw-bold"
-            style={{ borderRadius: "30px" }}
-          >
+          <button type="submit" className="btn btn-success w-100 fw-bold">
             Register
           </button>
         </form>

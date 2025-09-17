@@ -89,65 +89,65 @@ function Home() {
           width: "100%", // full width
         }}
       > */}
-        {/* 🌟 Banner Carousel */}
-        <div
-          id="bannerCarousel"
-          className="carousel slide mb-5"
-          data-bs-ride="carousel"
-          data-bs-interval="2000"
-        >
-          {/* Indicators */}
-          <div className="carousel-indicators">
-            {banners.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                data-bs-target="#bannerCarousel"
-                data-bs-slide-to={index}
-                className={index === 0 ? "active" : ""}
-                aria-current={index === 0 ? "true" : "false"}
-                aria-label={`Slide ${index + 1}`}
-              ></button>
-            ))}
+                  <div
+            id="bannerCarousel"
+            className="carousel slide mb-5"
+            data-bs-ride="carousel"
+            data-bs-interval="2000"
+          >
+            {/* Indicators */}
+            <div className="carousel-indicators">
+              {banners.map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  data-bs-target="#bannerCarousel"
+                  data-bs-slide-to={index}
+                  className={index === 0 ? "active" : ""}
+                  aria-current={index === 0 ? "true" : "false"}
+                  aria-label={`Slide ${index + 1}`}
+                ></button>
+              ))}
+            </div>
+
+            {/* Slides */}
+            <div className="carousel-inner">
+              {banners.map((banner, index) => (
+                <div
+                  key={index}
+                  className={`carousel-item ${index === 0 ? "active" : ""}`}
+                >
+                  <img
+                    src={banner}
+                    className="d-block w-100"
+                    alt={`Banner ${index + 1}`}
+                    style={{ height: "500px", objectFit: "cover" }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Controls */}
+            <button
+              className="carousel-control-prev"
+              type="button"
+              data-bs-target="#bannerCarousel"
+              data-bs-slide="prev"
+            >
+              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span className="visually-hidden">Previous</span>
+            </button>
+            <button
+              className="carousel-control-next"
+              type="button"
+              data-bs-target="#bannerCarousel"
+              data-bs-slide="next"
+            >
+              <span className="carousel-control-next-icon" aria-hidden="true"></span>
+              <span className="visually-hidden">Next</span>
+            </button>
           </div>
 
-          {/* Slides */}
-          <div className="carousel-inner">
-            {banners.map((banner, index) => (
-              <div
-                className={`carousel-item ${index === 0 ? "active" : ""}`}
-                key={index}
-              >
-                <img
-                  src={banner}
-                  className="d-block w-100"
-                  alt={`Banner ${index + 1}`}
-                  style={{ height: "500px", objectFit: "cover" }}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Controls */}
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target="#bannerCarousel"
-            data-bs-slide="prev"
-          >
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target="#bannerCarousel"
-            data-bs-slide="next"
-          >
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
-          </button>
-        </div>
 
         {/* ✅ Scrolling Banner */}
         <div className="official-banner">
@@ -203,116 +203,72 @@ function Home() {
           </div>
         </div>
 
-        {/* 🌟 Footer Section */}
-        <footer className="footer bg-dark text-light pt-5 pb-3 mt-5 w-100">
-          <div className="container-fluid px-5">
-            <div className="row">
-              {/* About */}
-              <div className="col-md-3 col-sm-6 mb-4">
-                <h5 className="fw-bold mb-3 text-uppercase">About Us</h5>
-                <p className="small text-muted">
-                  We bring you the latest and top-rated products at unbeatable
-                  prices. Shop with confidence and enjoy fast delivery.
-                </p>
-                {/* ✅ Team Names */}
-                <ul className="list-unstyled small text-muted">
-                  <li>👨‍💻 Bhushan Bonagiri – Founder</li>
-                  <li>🎨 Mohan Kilaparthi – UI/UX Designer</li>
-                  <li>⚙️ Naveen Golla – Backend Developer</li>
-                  <li>📦 Avinash Patel – Logistics Manager</li>
-                </ul>
-              </div>
+        {/* 🌟 Modern Footer */}
+<footer className="footer bg-dark text-light pt-5 pb-3 mt-5 w-100">
+  <div className="container px-5">
+    <div className="row gy-4">
+      {/* About */}
+      <div className="col-lg-3 col-md-6">
+        <h5 className="fw-bold mb-3 text-uppercase">About Us</h5>
+        <p className="small text-light">
+          We bring you the latest and top-rated products at unbeatable prices. 
+          Shop with confidence and enjoy fast delivery 🚚.
+        </p>
+       <ul className="list-unstyled small text-light fade-list">
+        <li>👨‍💻 Bhushan Bonagiri – Founder</li>
+        <li>🎨 Mohan Kilaparthi – UI/UX Designer</li>
+        <li>⚙️ Naveen Golla – Backend Developer</li>
+        <li>📦 Avinash Patel – Logistics Manager</li>
+      </ul>
 
-              {/* Quick Links */}
-              <div className="col-md-3 col-sm-6 mb-4">
-                <h5 className="fw-bold mb-3 text-uppercase">Quick Links</h5>
-                <ul className="list-unstyled">
-                  <li>
-                    <a href="/" className="footer-link">
-                      Home
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/wishlist" className="footer-link">
-                      Wishlist
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/cart" className="footer-link">
-                      Cart
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/contact" className="footer-link">
-                      Contact
-                    </a>
-                  </li>
-                </ul>
-              </div>
+      </div>
 
-              {/* Customer Support */}
-              <div className="col-md-3 col-sm-6 mb-4">
-                <h5 className="fw-bold mb-3 text-uppercase">
-                  Customer Service
-                </h5>
-                <ul className="list-unstyled">
-                  <li>
-                    <a href="/" className="footer-link">
-                      FAQs
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" className="footer-link">
-                      Shipping
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" className="footer-link">
-                      Returns
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/" className="footer-link">
-                      Privacy Policy
-                    </a>
-                  </li>
-                </ul>
-              </div>
+      {/* Quick Links */}
+      <div className="col-lg-3 col-md-6">
+        <h5 className="fw-bold mb-3 text-uppercase">Quick Links</h5>
+        <ul className="list-unstyled footer-links">
+          <li><a href="/">🏠 Home</a></li>
+          <li><a href="/wishlist">❤️ Wishlist</a></li>
+          <li><a href="/cart">🛒 Cart</a></li>
+          <li><a href="/contact">📩 Contact</a></li>
+        </ul>
+      </div>
 
-              {/* Contact */}
-              <div className="col-md-3 col-sm-6 mb-4">
-                <h5 className="fw-bold mb-3 text-uppercase">Contact Us</h5>
-                <p className="small">
-                  📍 123 Market Street, New Delhi, India <br />
-                  📞 +91 88867 60822 <br />
-                  📧 bhushancart@gmail.com
-                </p>
+      {/* Customer Service */}
+      <div className="col-lg-3 col-md-6">
+        <h5 className="fw-bold mb-3 text-uppercase">Customer Service</h5>
+        <ul className="list-unstyled footer-links">
+          <li><a href="/">❓ FAQs</a></li>
+          <li><a href="/">🚚 Shipping</a></li>
+          <li><a href="/">↩️ Returns</a></li>
+          <li><a href="/">🔒 Privacy Policy</a></li>
+        </ul>
+      </div>
 
-                <div className="social-icons">
-                  <a href="#" className="social-link">
-                    <i className="bi bi-facebook"></i>
-                  </a>
-                  <a href="#" className="social-link">
-                    <i className="bi bi-twitter"></i>
-                  </a>
-                  <a href="#" className="social-link">
-                    <i className="bi bi-instagram"></i>
-                  </a>
-                  <a href="#" className="social-link">
-                    <i className="bi bi-youtube"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
+      {/* Contact */}
+      <div className="col-lg-3 col-md-6">
+        <h5 className="fw-bold mb-3 text-uppercase">Contact Us</h5>
+        <p className="small">
+          📍 123 Market Street, New Delhi, India <br />
+          📞 +91 88867 60822 <br />
+          📧 bhushancart@gmail.com
+        </p>
+        <div className="social-icons d-flex gap-3 mt-3">
+          <a href="#" className="social-link"><i className="bi bi-facebook"></i></a>
+          <a href="#" className="social-link"><i className="bi bi-twitter"></i></a>
+          <a href="#" className="social-link"><i className="bi bi-instagram"></i></a>
+          <a href="#" className="social-link"><i className="bi bi-youtube"></i></a>
+        </div>
+      </div>
+    </div>
 
-            <hr className="bg-secondary" />
-            <div className="text-center small text-muted">
-              © {new Date().getFullYear()} <strong>MyShop</strong>. All rights
-              reserved.
-            </div>
-          </div>
-        </footer>
-     
+    <hr className="footer-divider" />
+    <div className="text-center small text-muted fade-in">
+      © {new Date().getFullYear()} <strong>MyShop</strong>. All rights reserved.
+    </div>
+  </div>
+</footer>
+
     </>
   );
 }
