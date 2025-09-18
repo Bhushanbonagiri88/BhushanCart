@@ -289,23 +289,13 @@ import "./SplashScreen.css";
 
 function SplashScreen({ onFinish }) {
   useEffect(() => {
-    const hasSeenSplash = localStorage.getItem("hasSeenSplash");
-
-    if (!hasSeenSplash) {
-      const timer = setTimeout(() => {
-        localStorage.setItem("hasSeenSplash", "true");
-        if (onFinish) onFinish();
-      }, 4000); // 4 seconds splash screen
-
-      return () => clearTimeout(timer);
-    } else {
-      // Skip splash immediately if already seen
+    // Always run splash for 4s
+    const timer = setTimeout(() => {
       if (onFinish) onFinish();
-    }
-  }, [onFinish]);
+    }, 4000);
 
-  const hasSeenSplash = localStorage.getItem("hasSeenSplash");
-  if (hasSeenSplash) return null; // Skip if already seen
+    return () => clearTimeout(timer);
+  }, [onFinish]);
 
   return (
     <AnimatePresence>
@@ -314,6 +304,7 @@ function SplashScreen({ onFinish }) {
         initial={{ opacity: 1 }}
         exit={{ opacity: 0, transition: { duration: 1 } }}
       >
+        {/* 🚴 Delivery Boy Animation */}
         <motion.img
           src="/images/delivery-boy.png"
           alt="Delivery Boy"
@@ -322,6 +313,8 @@ function SplashScreen({ onFinish }) {
           animate={{ x: "120%" }}
           transition={{ duration: 3, ease: "easeInOut" }}
         />
+
+        {/* 🛒 Logo Animation */}
         <motion.img
           src="/images/logo.png"
           alt="Bhushan Cart"
@@ -334,6 +327,8 @@ function SplashScreen({ onFinish }) {
             ease: [0.25, 1, 0.5, 1],
           }}
         />
+
+        {/* ✨ Tagline */}
         <motion.h2
           className="tagline"
           initial={{ opacity: 0, y: 15 }}

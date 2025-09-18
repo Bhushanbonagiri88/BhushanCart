@@ -8,7 +8,7 @@ const productSlice = createSlice({
    veg: [
   { id: 101, name: "Potato", price: 100, image: "/images/potato.jpg", description: "Fresh and healthy potatoes" },
   { id: 102, name: "Tomato", price: 50, image: "/images/tomato.jpg", description: "Juicy red tomatoes" },
-  { id: 103, name: "Carrot", price: 80, image: "/images/carrot.jpg", description: "Crunchy and sweet carrots" },
+  { id: 103, name: "Carrot", price: 80, image: "/images/Carrot1.jpg", description: "Crunchy and sweet carrots" },
   { id: 104, name: "Cabbage", price: 60, image: "/images/cabbage.jpg", description: "Fresh green cabbage" },
   { id: 105, name: "Spinach", price: 40, image: "/images/spinach.jpg", description: "Healthy leafy spinach" },
   { id: 106, name: "Cauliflower", price: 90, image: "/images/cauliflower.jpg", description: "White and fresh cauliflower" },
@@ -53,8 +53,8 @@ laptops: [
     mobiles: [
       { id: 1, name: "Realme Narzo 60", price: 14999, image: "/images/realme-narzo60.jpg", description: "Realme Narzo with AMOLED display and fast charging" },
       { id: 2, name: "Redmi Note 12", price: 16999, image: "/images/redmi-note12.jpg", description: "Redmi Note series with Snapdragon processor" },
-      { id: 3, name: "iPhone 14", price: 69999, image: "/images/iphone14.jpg", description: "Apple iPhone 14 with A15 Bionic chip" },
-      { id: 4, name: "Samsung Galaxy S23", price: 74999, image: "/images/samsung-s23.jpg", description: "Samsung flagship with stunning AMOLED display" },
+      { id: 3, name: "iPhone 14", price: 69999, image: "/images/iphone141.jpg", description: "Apple iPhone 14 with A15 Bionic chip" },
+      { id: 4, name: "Samsung Galaxy S23", price: 74999, image: "/images/samsung-s23.htm", description: "Samsung flagship with stunning AMOLED display" },
       { id: 5, name: "OnePlus 11", price: 58999, image: "/images/oneplus11.jpg", description: "OnePlus 11 with Hasselblad camera and OxygenOS" },
       { id: 6, name: "Vivo V27", price: 28999, image: "/images/vivo-v27.jpg", description: "Vivo V27 with curved AMOLED and portrait camera" },
       { id: 7, name: "Oppo Reno 10", price: 32999, image: "/images/oppo-reno10.jpg", description: "Oppo Reno with periscope zoom lens" },

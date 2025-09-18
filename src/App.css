@@ -1,4 +1,6 @@
-/* ✅ Root should take full width/height, not restrict */
+/* ================== */
+/* 🌐 Global Defaults */
+/* ================== */
 #root {
   width: 100%;
   min-height: 100vh;
@@ -9,7 +11,6 @@
   flex-direction: column;
 }
 
-/* ✅ Page wrapper for center alignment */
 .page-container {
   flex: 1;
   display: flex;
@@ -18,34 +19,129 @@
   padding: 2rem;
 }
 
-/* ✅ Navbar fixed at top */
+/* ================== */
+/* 🌐 Header & Navbar */
+/* ================== */
+header {
+  background: #fff;
+  z-index: 1030;
+}
+
+header img {
+  max-height: 45px;
+}
+
+/* ✅ Buttons */
+header .btn {
+  font-size: 14px;
+  padding: 5px 10px;
+}
+
+/* ✅ Search Bar */
+header form {
+  display: flex;
+  align-items: center;
+}
+
+header form input {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px 0 0 6px;
+}
+
+header form button {
+  padding: 8px 14px;
+  font-size: 15px;
+  border: none;
+  background: #0d6efd;
+  color: #fff;
+  border-radius: 0 6px 6px 0;
+  transition: background 0.3s ease;
+}
+
+header form button:hover {
+  background: #084298;
+}
+
+/* ✅ Navbar Defaults */
+.navbar {
+  padding: 0.4rem 1rem;
+}
+
 .nav-link {
   transition: all 0.3s ease;
   font-size: 16px;
-  padding: 10px 20px;  /* inside spacing */
-  margin-right: 20px;  /* 🔹 add space between items */
+  padding: 10px 16px;
+  margin: 0 4px;
   border-radius: 6px;
   font-weight: 500;
   text-transform: capitalize;
-}
-
-/* ✅ Navbar links */
-.nav-link {
-  transition: all 0.3s ease;
-  font-size: 16px;
-  padding: 10px 18px;   /* 🔹 more padding for breathing space */
-  margin: 0 6px;        /* 🔹 space between items */
-  border-radius: 6px;
-  font-weight: 500;
-  text-transform: capitalize; /* 🔹 nicer text look */
 }
 
 .nav-link:hover {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 8px;
 }
+
 .active-nav {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 8px;
-  /* color: #fff !important; */
+}
+
+/* ================== */
+/* 📱 Mobile Styling  */
+/* ================== */
+@media (max-width: 768px) {
+  /* ✅ Row 1: Logo + Icons */
+  header .container-fluid > .d-flex {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  /* ✅ Row 2: Search full width */
+  header form {
+    width: 100%;
+    margin-top: 5px;
+  }
+  header form input {
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+  header form button {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  /* ✅ Navbar horizontal scroll like Amazon */
+  .navbar-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .navbar-nav .nav-item {
+    flex: 0 0 auto;
+  }
+  .nav-link {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+
+  /* ✅ Smaller icons */
+  header .btn {
+    font-size: 13px;
+    padding: 4px 8px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 480px) {
+  header img {
+    max-height: 38px;
+  }
+  .nav-link {
+    font-size: 13px;
+    padding: 7px 12px;
+  }
 }

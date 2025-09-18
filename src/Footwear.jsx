@@ -14,7 +14,7 @@ function Footwear() {
     },
     {
       name: "Shoes",
-      image: "/images/shoes.jpg", // ✅ replace with your shoes image
+      image: "/images/shoes1.jpg", // ✅ replace with your shoes image
       color: "dark",
       description: "Trendy and durable shoes for every occasion.",
       path: "/footware/shoes",

@@ -14,14 +14,14 @@ function Electronics() {
     },
     {
       name: "Laptops",
-      image: "/images/laptops.jpg",
+      image: "/images/laptops.webp",
       color: "warning",
       description: "High-performance laptops for work, gaming, and study.",
       path: "/electronics/laptops",
     },
     {
       name: "Cameras",
-      image: "/images/cameras.jpg",
+      image: "/images/cameras.webp",
       color: "primary",
       description: "Capture moments with top-quality cameras and accessories.",
       path: "/electronics/cameras",

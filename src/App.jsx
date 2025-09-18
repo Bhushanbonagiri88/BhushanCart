@@ -311,11 +311,12 @@ import FootBall from "./FootBall";
 import Cricket from "./Cricket";
 import Footwear from "./Footwear";
 import Kitchen from "./Kitchen";
+import { tr } from "framer-motion/client";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
-  const [showSplash, setShowSplash] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -348,107 +349,127 @@ function App() {
     navigate("/login");
   };
 
-  // Show splash screen if not already seen
+  // Show splash screen only once
   useEffect(() => {
-    const hasSeenSplash = localStorage.getItem("hasSeenSplash");
-    if (!hasSeenSplash) {
-      setShowSplash(true);
-    }
-    // For debugging: uncomment the line below to always show the splash screen
-    // setShowSplash(true);
-  }, []);
+    // Check if splash has been shown in this session
+    const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
 
-  useEffect(() => {
-    setIsNavCollapsed(true);
-  }, [location.pathname]);
+    // Detect page reload
+    const isReload =
+      performance.getEntriesByType("navigation")[0]?.type === "reload";
+
+    // Show splash only if not seen before and not a reload
+    if (!hasSeenSplash && !isReload) {
+      setShowSplash(true);
+      const timer = setTimeout(() => {
+        setShowSplash(false);
+        sessionStorage.setItem("hasSeenSplash", "true");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   if (showSplash) {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
-
   return (
     <>
-     {/* Header */}
-<header className="py-2 shadow-sm fixed-top bg-white">
-  <div className="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
-    {/* Logo */}
-    <Link to="/" className="d-flex align-items-center text-decoration-none mb-2 mb-md-0">
-      <img src="/images/Untitled-1.png" height={50} alt="Logo" />
-    </Link>
-
-    {/* Search Form */}
-    <form
-      className="d-flex flex-grow-1"
-      style={{ maxWidth: "500px" }}
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (searchQuery.trim() !== "") {
-          navigate(`/search?q=${searchQuery}`);
-          setSearchQuery("");
-        }
-      }}
-    >
-      <input
-        type="search"
-        className="form-control me-2"
-        placeholder="Search products..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <button className="btn btn-primary">Search</button>
-    </form>
-
-    {/* Icons & Auth */}
-    <div className="d-flex align-items-center gap-2 mt-2 mt-md-0">
-      {/* Wishlist */}
-      <Link to="/wishlist" className="btn btn-outline-danger position-relative">
-        ❤️
-        {totalWishlistItems > 0 && (
-          <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
-            {totalWishlistItems}
-          </span>
-        )}
-      </Link>
-
-      {/* Cart */}
-      <Link to="/cart" className="btn btn-outline-primary position-relative">
-        🛒
-        {totalCartItems > 0 && (
-          <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
-            {totalCartItems}
-          </span>
-        )}
-      </Link>
-
-      {/* Authentication */}
-      {isAuthenticated ? (
-        <div className="d-flex flex-column flex-md-row align-items-center gap-2">
-          <span className="fw-semibold">Hello, {currentUsername}</span>
-          <button onClick={handleLogout} className="btn btn-outline-dark">
-            Logout
-          </button>
-        </div>
-      ) : (
-        <div className="d-flex flex-column flex-md-row gap-2">
-          <Link to="/login" className="btn btn-outline-dark">
-            🔑
+      {/* Header */}
+      <header className="py-2 shadow-sm fixed-top bg-white">
+        <div className="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+          {/* Logo */}
+          <Link
+            to="/"
+            className="d-flex align-items-center text-decoration-none mb-2 mb-md-0"
+          >
+            <img src="/images/Untitled-1.png" height={50} alt="Logo" />
           </Link>
-          <Link to="/register" className="btn btn-outline-dark">
-            👤
-          </Link>
-        </div>
-      )}
-    </div>
-  </div>
-</header>
 
+          {/* Search Bar */}
+          <form
+            className="d-flex w-100 w-md-auto flex-grow-1 mb-2 mb-md-0"
+            style={{ maxWidth: "500px" }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (searchQuery.trim() !== "") {
+                navigate(`/search?q=${searchQuery}`);
+                setSearchQuery("");
+              }
+            }}
+          >
+            <input
+              type="search"
+              className="form-control me-2"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button className="btn btn-primary">Search</button>
+          </form>
+
+          {/* Icons & Auth */}
+          <div className="d-flex align-items-center gap-2 flex-wrap justify-content-center">
+            {/* Wishlist */}
+            <Link
+              to="/wishlist"
+              className="btn btn-outline-danger position-relative"
+            >
+              ❤️
+              {totalWishlistItems > 0 && (
+                <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+                  {totalWishlistItems}
+                </span>
+              )}
+            </Link>
+
+            {/* Cart */}
+            <Link
+              to="/cart"
+              className="btn btn-outline-primary position-relative"
+            >
+              🛒
+              {totalCartItems > 0 && (
+                <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+                  {totalCartItems}
+                </span>
+              )}
+            </Link>
+
+            {/* Auth */}
+            {isAuthenticated ? (
+              <div className="d-flex flex-row align-items-center gap-2">
+                <span className="fw-semibold small">
+                  Hi, {currentUsername}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-sm btn-outline-dark"
+                >
+                  Logout
+                </button>
+              </div>
+
+            ) : (
+              <div className="d-flex gap-2">
+                <Link to="/login" className="btn btn-sm btn-outline-dark">
+                  🔑
+                </Link>
+                <Link to="/register" className="btn btn-sm btn-outline-dark">
+                  👤
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
 
       {/* Navbar */}
       <nav
         className="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm"
         style={{
           background: "linear-gradient(90deg, #6a11cb, #2575fc)",
-          top: "65px",
+          top: "55px",
         }}
       >
         <div className="container-fluid">
@@ -464,7 +485,9 @@ function App() {
           </button>
 
           <div
-            className={`collapse navbar-collapse ${!isNavCollapsed ? "show" : ""}`}
+            className={`collapse navbar-collapse ${
+              !isNavCollapsed ? "show" : ""
+            }`}
             id="navbarNav"
           >
             <ul className="navbar-nav mx-auto text-center">
@@ -528,3 +551,4 @@ function App() {
 }
 
 export default App;
+
