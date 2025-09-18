@@ -60,7 +60,7 @@ function SmartHome() {
 
   return (
     <div className="container my-4">
-      <h1 className="text-primary text-center mb-4">🏠 Smart Home Products 🏠</h1>
+      <h1 className="text-primary text-center mb-4"> Smart Home Products </h1>
 
       {/* Price Filter */}
       <div className="d-flex justify-content-center gap-3 mb-4 flex-wrap">

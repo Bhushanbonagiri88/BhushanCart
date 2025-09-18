@@ -368,73 +368,80 @@ function App() {
 
   return (
     <>
-      {/* Header */}
-      <header className="py-2 shadow-sm fixed-top bg-white">
-        <div className="container d-flex align-items-center justify-content-between">
-          <Link to="/" className="d-flex align-items-center text-decoration-none">
-            <img src="/images/Untitled-1.png" height={50} alt="Logo" />
-          </Link>
+     {/* Header */}
+<header className="py-2 shadow-sm fixed-top bg-white">
+  <div className="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
+    {/* Logo */}
+    <Link to="/" className="d-flex align-items-center text-decoration-none mb-2 mb-md-0">
+      <img src="/images/Untitled-1.png" height={50} alt="Logo" />
+    </Link>
 
-          <form
-            className="d-flex mx-2 flex-grow-1"
-            style={{ maxWidth: "500px" }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (searchQuery.trim() !== "") {
-                navigate(`/search?q=${searchQuery}`);
-                setSearchQuery("");
-              }
-            }}
-          >
-            <input
-              type="search"
-              className="form-control me-2"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button className="btn btn-primary">Search</button>
-          </form>
+    {/* Search Form */}
+    <form
+      className="d-flex flex-grow-1"
+      style={{ maxWidth: "500px" }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (searchQuery.trim() !== "") {
+          navigate(`/search?q=${searchQuery}`);
+          setSearchQuery("");
+        }
+      }}
+    >
+      <input
+        type="search"
+        className="form-control me-2"
+        placeholder="Search products..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <button className="btn btn-primary">Search</button>
+    </form>
 
-          <div className="d-flex align-items-center gap-2">
-            <Link to="/wishlist" className="btn btn-outline-danger position-relative">
-              ❤️
-              {totalWishlistItems > 0 && (
-                <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
-                  {totalWishlistItems}
-                </span>
-              )}
-            </Link>
+    {/* Icons & Auth */}
+    <div className="d-flex align-items-center gap-2 mt-2 mt-md-0">
+      {/* Wishlist */}
+      <Link to="/wishlist" className="btn btn-outline-danger position-relative">
+        ❤️
+        {totalWishlistItems > 0 && (
+          <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+            {totalWishlistItems}
+          </span>
+        )}
+      </Link>
 
-            <Link to="/cart" className="btn btn-outline-primary position-relative">
-              🛒
-              {totalCartItems > 0 && (
-                <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
-                  {totalCartItems}
-                </span>
-              )}
-            </Link>
+      {/* Cart */}
+      <Link to="/cart" className="btn btn-outline-primary position-relative">
+        🛒
+        {totalCartItems > 0 && (
+          <span className="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+            {totalCartItems}
+          </span>
+        )}
+      </Link>
 
-            {isAuthenticated ? (
-              <>
-                <span className="me-2 fw-semibold">Hello, {currentUsername}</span>
-                <button onClick={handleLogout} className="btn btn-outline-dark">
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="btn btn-outline-dark">
-                  🔑
-                </Link>
-                <Link to="/register" className="btn btn-outline-dark">
-                  👤
-                </Link>
-              </>
-            )}
-          </div>
+      {/* Authentication */}
+      {isAuthenticated ? (
+        <div className="d-flex flex-column flex-md-row align-items-center gap-2">
+          <span className="fw-semibold">Hello, {currentUsername}</span>
+          <button onClick={handleLogout} className="btn btn-outline-dark">
+            Logout
+          </button>
         </div>
-      </header>
+      ) : (
+        <div className="d-flex flex-column flex-md-row gap-2">
+          <Link to="/login" className="btn btn-outline-dark">
+            🔑
+          </Link>
+          <Link to="/register" className="btn btn-outline-dark">
+            👤
+          </Link>
+        </div>
+      )}
+    </div>
+  </div>
+</header>
+
 
       {/* Navbar */}
       <nav

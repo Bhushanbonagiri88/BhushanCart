@@ -8,13 +8,26 @@ function Cameras() {
   const wishlistItems = useSelector((state) => state.wishlist);
   const dispatch = useDispatch();
 
+  // ✅ Price Filter State
+  const [filter, setFilter] = useState("all"); // all | low | mid | high
+
+  // ✅ Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  const totalPages = Math.ceil(cameraItems.length / itemsPerPage);
+  // ✅ Apply Filter
+  const filteredItems = cameraItems.filter((item) => {
+    if (filter === "low") return item.price < 5000;
+    if (filter === "mid") return item.price >= 5000 && item.price <= 20000;
+    if (filter === "high") return item.price > 20000;
+    return true; // "all"
+  });
+
+  // ✅ Pagination logic
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = cameraItems.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleAddToCart = (item) => {
     dispatch(addToCart(item));
@@ -53,89 +66,123 @@ function Cameras() {
   return (
     <>
       <h1 className="text-primary text-center my-4">
-        📸 Explore Our Camera Collection 📸
+         Explore Our Camera Collection 
       </h1>
+
+      {/* ✅ Price Filter Buttons */}
+      <div className="d-flex flex-wrap justify-content-center gap-2 mb-4">
+        <button
+          className={`btn ${filter === "all" ? "btn-primary" : "btn-outline-primary"}`}
+          onClick={() => { setFilter("all"); setCurrentPage(1); }}
+        >
+          All
+        </button>
+        <button
+          className={`btn ${filter === "low" ? "btn-primary" : "btn-outline-primary"}`}
+          onClick={() => { setFilter("low"); setCurrentPage(1); }}
+        >
+          Under ₹5000
+        </button>
+        <button
+          className={`btn ${filter === "mid" ? "btn-primary" : "btn-outline-primary"}`}
+          onClick={() => { setFilter("mid"); setCurrentPage(1); }}
+        >
+          ₹5000 - ₹20000
+        </button>
+        <button
+          className={`btn ${filter === "high" ? "btn-primary" : "btn-outline-primary"}`}
+          onClick={() => { setFilter("high"); setCurrentPage(1); }}
+        >
+          Above ₹20000
+        </button>
+      </div>
 
       <div className="container-fluid">
         <div className="row">
-          {currentItems.map((item) => {
-            const inWishlist = wishlistItems.find((w) => w.id === item.id);
-            return (
-              <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
-                <div
-                  className="card h-100 shadow-sm border-0 hover-shadow"
-                  style={{ transition: "transform 0.3s" }}
-                >
-                  <img
-                    src={item.image}
-                    className="card-img-top"
-                    alt={item.name}
-                    style={{ height: "150px", objectFit: "cover" }}
-                    onError={(e) => (e.target.src = "/images/placeholder.jpg")}
-                  />
-                  <div className="card-body d-flex flex-column justify-content-between text-center">
-                    <div>
-                      <h5 className="card-title">{item.name}</h5>
-                      <p className="card-text">{item.description}</p>
-                      <p className="card-text fw-bold">Price: ₹{item.price}</p>
-                    </div>
-                    <div className="d-flex gap-2 mt-2">
-                      <button
-                        className="btn btn-success flex-fill"
-                        onClick={() => handleAddToCart(item)}
-                      >
-                        🛒 Add To Cart
-                      </button>
-                      <button
-                        className={`btn flex-fill ${
-                          inWishlist ? "btn-danger" : "btn-outline-danger"
-                        }`}
-                        onClick={() => handleWishlist(item)}
-                      >
-                        {inWishlist ? "❌ Remove" : "❤️ Wishlist"}
-                      </button>
+          {currentItems.length > 0 ? (
+            currentItems.map((item) => {
+              const inWishlist = wishlistItems.find((w) => w.id === item.id);
+              return (
+                <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
+                  <div
+                    className="card h-100 shadow-sm border-0 hover-shadow"
+                    style={{ transition: "transform 0.3s" }}
+                  >
+                    <img
+                      src={item.image}
+                      className="card-img-top"
+                      alt={item.name}
+                      style={{ height: "150px", objectFit: "cover" }}
+                      onError={(e) => (e.target.src = "/images/placeholder.jpg")}
+                    />
+                    <div className="card-body d-flex flex-column justify-content-between text-center">
+                      <div>
+                        <h5 className="card-title">{item.name}</h5>
+                        <p className="card-text">{item.description}</p>
+                        <p className="card-text fw-bold">Price: ₹{item.price}</p>
+                      </div>
+                      <div className="d-flex gap-2 mt-2">
+                        <button
+                          className="btn btn-success flex-fill"
+                          onClick={() => handleAddToCart(item)}
+                        >
+                          🛒 Add To Cart
+                        </button>
+                        <button
+                          className={`btn flex-fill ${
+                            inWishlist ? "btn-danger" : "btn-outline-danger"
+                          }`}
+                          onClick={() => handleWishlist(item)}
+                        >
+                          {inWishlist ? "❌ Remove" : "❤️ Wishlist"}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <p className="text-center">⚠️ No cameras found in this price range.</p>
+          )}
         </div>
 
-        {/* Pagination Controls */}
-        <div className="d-flex justify-content-center my-3">
-          <button
-            className="btn btn-outline-primary mx-1"
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-          >
-            ⬅ Prev
-          </button>
-
-          {Array.from({ length: totalPages }, (_, index) => (
+        {/* ✅ Pagination */}
+        {totalPages > 1 && (
+          <div className="d-flex justify-content-center my-3">
             <button
-              key={index + 1}
-              onClick={() => setCurrentPage(index + 1)}
-              className={`btn mx-1 ${
-                currentPage === index + 1
-                  ? "btn-primary"
-                  : "btn-outline-primary"
-              }`}
+              className="btn btn-outline-primary mx-1"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
             >
-              {index + 1}
+              ⬅ Prev
             </button>
-          ))}
 
-          <button
-            className="btn btn-outline-primary mx-1"
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            disabled={currentPage === totalPages}
-          >
-            Next ➡
-          </button>
-        </div>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => setCurrentPage(index + 1)}
+                className={`btn mx-1 ${
+                  currentPage === index + 1
+                    ? "btn-primary"
+                    : "btn-outline-primary"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button
+              className="btn btn-outline-primary mx-1"
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+            >
+              Next ➡
+            </button>
+          </div>
+        )}
       </div>
 
       <style>

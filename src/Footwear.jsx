@@ -17,7 +17,7 @@ function Footwear() {
       image: "/images/shoes.jpg", // ✅ replace with your shoes image
       color: "dark",
       description: "Trendy and durable shoes for every occasion.",
-      path: "/footware//shoes",
+      path: "/footware/shoes",
     },
   ];
 

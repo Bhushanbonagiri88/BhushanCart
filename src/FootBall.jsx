@@ -11,10 +11,21 @@ function FootBall() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  const totalPages = Math.ceil(footballItems.length / itemsPerPage);
+  // ✅ Filter state
+  const [priceFilter, setPriceFilter] = useState("all");
+
+  // ✅ Apply filter
+  const filteredItems = footballItems.filter((item) => {
+    if (priceFilter === "low") return item.price < 500;
+    if (priceFilter === "mid") return item.price >= 500 && item.price <= 1500;
+    if (priceFilter === "high") return item.price > 1500;
+    return true;
+  });
+
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = footballItems.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleAddToCart = (item) => {
     dispatch(addToCart(item));
@@ -52,7 +63,58 @@ function FootBall() {
 
   return (
     <>
-      <h1 className="text-primary text-center my-4">⚽ Football Equipment ⚽</h1>
+      <h1 className="text-primary text-center my-4">Football Equipment</h1>
+
+      {/* ✅ Mobile-friendly filter buttons */}
+      <div className="container mb-4">
+        <div className="d-flex flex-wrap justify-content-center gap-2">
+          <button
+            className={`btn ${
+              priceFilter === "all" ? "btn-primary" : "btn-outline-primary"
+            }`}
+            onClick={() => {
+              setPriceFilter("all");
+              setCurrentPage(1);
+            }}
+          >
+            All
+          </button>
+          <button
+            className={`btn ${
+              priceFilter === "low" ? "btn-primary" : "btn-outline-primary"
+            }`}
+            onClick={() => {
+              setPriceFilter("low");
+              setCurrentPage(1);
+            }}
+          >
+            Below ₹500
+          </button>
+          <button
+            className={`btn ${
+              priceFilter === "mid" ? "btn-primary" : "btn-outline-primary"
+            }`}
+            onClick={() => {
+              setPriceFilter("mid");
+              setCurrentPage(1);
+            }}
+          >
+            ₹500 – ₹1500
+          </button>
+          <button
+            className={`btn ${
+              priceFilter === "high" ? "btn-primary" : "btn-outline-primary"
+            }`}
+            onClick={() => {
+              setPriceFilter("high");
+              setCurrentPage(1);
+            }}
+          >
+            Above ₹1500
+          </button>
+        </div>
+      </div>
+
       <div className="container-fluid">
         <div className="row">
           {currentItems.map((item) => {
@@ -99,7 +161,7 @@ function FootBall() {
           })}
         </div>
 
-        {/* Pagination */}
+        {/* ✅ Pagination */}
         <div className="d-flex justify-content-center my-3">
           <button
             className="btn btn-outline-primary mx-1"

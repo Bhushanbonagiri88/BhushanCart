@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import React, { useState } from "react";
 
 function Dairy() {
-  const dairyItems = useSelector((state) => state.products.dairy); // from store
+  const dairyItems = useSelector((state) => state.products.dairy);
   const wishlistItems = useSelector((state) => state.wishlist);
   const dispatch = useDispatch();
 
@@ -52,87 +52,93 @@ function Dairy() {
 
   return (
     <>
-      <h1 className="text-primary text-center my-4">🧀 This Is The Dairy Page 🥛</h1>
+      <h1 className="text-primary text-center my-4"> This Is The Dairy Page </h1>
       <div className="container-fluid">
         <div className="row">
-          {currentItems.map((item) => {
-            const inWishlist = wishlistItems.find((w) => w.id === item.id);
-            return (
-              <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
-                <div
-                  className="card h-100 shadow-sm border-0 hover-shadow"
-                  style={{ transition: "transform 0.3s" }}
-                >
-                  <img
-                    src={item.image}
-                    className="card-img-top"
-                    alt={item.name}
-                    style={{ height: "150px", objectFit: "cover" }}
-                    onError={(e) => (e.target.src = "/images/placeholder.jpg")}
-                  />
-                  <div className="card-body d-flex flex-column justify-content-between text-center">
-                    <div>
-                      <h5 className="card-title">{item.name}</h5>
-                      <p className="card-text">{item.description}</p>
-                      <p className="card-text fw-bold">Price: ₹{item.price}</p>
-                    </div>
-                    <div className="d-flex gap-2 mt-2">
-                      <button
-                        className="btn btn-success flex-fill"
-                        onClick={() => handleAddToCart(item)}
-                      >
-                        🛒 Add To Cart
-                      </button>
-                      <button
-                        className={`btn flex-fill ${
-                          inWishlist ? "btn-danger" : "btn-outline-danger"
-                        }`}
-                        onClick={() => handleWishlist(item)}
-                      >
-                        {inWishlist ? "❌ Remove" : "❤️ Wishlist"}
-                      </button>
+          {currentItems.length > 0 ? (
+            currentItems.map((item) => {
+              const inWishlist = wishlistItems.find((w) => w.id === item.id);
+              return (
+                <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
+                  <div
+                    className="card h-100 shadow-sm border-0 hover-shadow"
+                    style={{ transition: "transform 0.3s" }}
+                  >
+                    <img
+                      src={item.image}
+                      className="card-img-top"
+                      alt={item.name}
+                      style={{ height: "150px", objectFit: "cover" }}
+                      onError={(e) => (e.target.src = "/images/placeholder.jpg")}
+                    />
+                    <div className="card-body d-flex flex-column justify-content-between text-center">
+                      <div>
+                        <h5 className="card-title">{item.name}</h5>
+                        <p className="card-text">{item.description}</p>
+                        <p className="card-text fw-bold">Price: ₹{item.price}</p>
+                      </div>
+                      <div className="d-flex gap-2 mt-2">
+                        <button
+                          className="btn btn-success flex-fill"
+                          onClick={() => handleAddToCart(item)}
+                        >
+                          🛒 Add To Cart
+                        </button>
+                        <button
+                          className={`btn flex-fill ${
+                            inWishlist ? "btn-danger" : "btn-outline-danger"
+                          }`}
+                          onClick={() => handleWishlist(item)}
+                        >
+                          {inWishlist ? "❌ Remove" : "❤️ Wishlist"}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <h4 className="text-center text-muted">⚠ No Dairy Products Available</h4>
+          )}
         </div>
 
         {/* Pagination */}
-        <div className="d-flex justify-content-center my-3">
-          <button
-            className="btn btn-outline-primary mx-1"
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-          >
-            ⬅ Prev
-          </button>
-
-          {Array.from({ length: totalPages }, (_, index) => (
+        {totalPages > 1 && (
+          <div className="d-flex justify-content-center my-3">
             <button
-              key={index + 1}
-              onClick={() => setCurrentPage(index + 1)}
-              className={`btn mx-1 ${
-                currentPage === index + 1
-                  ? "btn-primary"
-                  : "btn-outline-primary"
-              }`}
+              className="btn btn-outline-primary mx-1"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
             >
-              {index + 1}
+              ⬅ Prev
             </button>
-          ))}
 
-          <button
-            className="btn btn-outline-primary mx-1"
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            disabled={currentPage === totalPages}
-          >
-            Next ➡
-          </button>
-        </div>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => setCurrentPage(index + 1)}
+                className={`btn mx-1 ${
+                  currentPage === index + 1
+                    ? "btn-primary"
+                    : "btn-outline-primary"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button
+              className="btn btn-outline-primary mx-1"
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+            >
+              Next ➡
+            </button>
+          </div>
+        )}
       </div>
 
       <style>
