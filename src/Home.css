@@ -1,4 +1,4 @@
-/* 🔹 Scrolling Sales Banner */
+/* 🔹 Scrolling Sales Banner
 .official-banner {
   background: linear-gradient(90deg, #0072ff, #00c6ff);
   color: #fff;
@@ -208,30 +208,30 @@
 /* 🔥 Fixed full-width banner box */
 .official-banner {
   width: 100%;
-  height: 80px; /* you can change height */
+  height: 50px;          /* smaller height for mobile */
   background: linear-gradient(to right, #ff5722, #ff9800);
   color: white;
   display: flex;
-  align-items: center;      /* center vertically */
-  overflow: hidden;         /* hide overflow text */
-  position: relative;       /* keeps text inside */
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  border-radius: 8px;
 }
 
 /* 🔥 Only the text moves */
 .banner-text {
   position: absolute;
   white-space: nowrap;
-  font-size: 22px;
+  font-size: 16px;       /* adjust for mobile */
   font-weight: bold;
   animation: scrollText 12s linear infinite;
 }
-
 /* ✅ Animation */
 @keyframes scrollText {
-  from {
+  0% {
     transform: translateX(100%);
   }
-  to {
+  100% {
     transform: translateX(-100%);
   }
 }
@@ -249,4 +249,4 @@
   width: 100%;
   height: 500px;   /* same for all slides */
   object-fit: cover;
-}
+} 

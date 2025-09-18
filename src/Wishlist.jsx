@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromWishlist, clearWishlist } from "./store";
+import { removeFromWishlist, clearWishlist } from "./Store";
 import Swal from "sweetalert2";
 
 function Wishlist() {

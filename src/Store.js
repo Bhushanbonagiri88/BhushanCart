@@ -441,19 +441,6 @@ const wishlistSlice = createSlice({
   },
 });
 
-// ---------------- Orders Slice ----------------
-// const ordersSlice = createSlice({
-//   name: "orders",
-//   initialState: initialStateOrders,
-//   reducers: {
-//     addOrder(state, action) {
-//       state.push(action.payload);
-//     },
-//     clearOrders() {
-//       return [];
-//     },
-//   },
-// });
 const ordersSlice = createSlice({
   name: "orders",
   initialState: initialStateOrders,

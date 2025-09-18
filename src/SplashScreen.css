@@ -1,4 +1,4 @@
-/* Fullscreen container with gradient background */
+/* SplashScreen.css */
 .splash-container {
   position: fixed;
   top: 0;
@@ -16,7 +16,6 @@
   flex-direction: column;
 }
 
-/* 🚴 Delivery boy */
 .bike {
   position: absolute;
   bottom: 15%;
@@ -24,7 +23,6 @@
   filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
 }
 
-/* 🛍️ Logo */
 .logo {
   width: 250px;
   margin-bottom: 20px;
@@ -33,7 +31,6 @@
   border-radius: 12px;
 }
 
-/* ✨ Tagline */
 .tagline {
   color: #fff;
   font-size: 1.5rem;
@@ -43,7 +40,6 @@
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* 🌈 Gradient background animation */
 @keyframes gradientBG {
   0% {
     background-position: 0% 50%;

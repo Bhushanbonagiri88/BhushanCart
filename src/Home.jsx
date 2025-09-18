@@ -91,10 +91,7 @@ function Home() {
       > */}
                   <div
             id="bannerCarousel"
-            className="carousel slide mb-5"
-            data-bs-ride="carousel"
-            data-bs-interval="2000"
-          >
+            className="carousel slide mb-4" data-bs-ride="carousel" data-bs-interval="2000">
             {/* Indicators */}
             <div className="carousel-indicators">
               {banners.map((_, index) => (
@@ -119,7 +116,7 @@ function Home() {
                 >
                   <img
                     src={banner}
-                    className="d-block w-100"
+                    className="d-block w-100 img-fluid"
                     alt={`Banner ${index + 1}`}
                     style={{ height: "500px", objectFit: "cover" }}
                   />
