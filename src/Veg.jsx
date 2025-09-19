@@ -146,6 +146,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addToCart, addToWishlist, removeFromWishlist } from "./Store";
 import Swal from "sweetalert2";
 import React, { useState } from "react";
+import "./veg.css";
 
 function Veg() {
   const vegProducts = useSelector((state) => state.products.veg);
@@ -260,7 +261,7 @@ function Veg() {
                     <p className="card-text text-muted">{item.description}</p>
                     <span className="fw-bold">{formatPrice(item.price)}</span>
                   </div>
-                  <div className="d-flex flex-column flex-sm-row gap-2 mt-2">
+                  <div className="d-flex flex-column flex-sm-row gap-2 mt-2 .product-btn ">
                     <button
                       className="btn btn-success flex-fill"
                       onClick={() => handleAddToCart(item)}
