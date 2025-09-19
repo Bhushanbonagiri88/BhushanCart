@@ -95,12 +95,11 @@ function SmartHome() {
           return (
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
               <div className="card h-100 shadow-sm border-0 hover-shadow" style={{ transition: "transform 0.3s" }}>
-                <img
-                  src={item.image}
-                  className="card-img-top"
-                  alt={item.name}
-                  style={{ height: "150px", objectFit: "cover" }}
-                />
+                 <img
+                    src={item.image}
+                    alt={item.name}
+                    className="card-img-top product-img"
+                  />
                 <div className="card-body d-flex flex-column justify-content-between text-center">
                   <div>
                     <h5 className="card-title">{item.name}</h5>
@@ -178,6 +177,14 @@ function SmartHome() {
           .pagination .page-item .page-link {
             cursor: pointer;
           }
+             .product-img {
+              height: 220px;       /* consistent height */
+              width: 100%;         /* full width */
+              object-fit: contain; /* show the full image without cutting */
+              padding: 10px;       /* little spacing inside */
+              background-color: #f9f9f9; /* optional: light bg for contrast */
+              border-radius: 8px;  /* rounded look */
+            }
         `}
       </style>
     </div>

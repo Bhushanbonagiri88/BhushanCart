@@ -1,6 +1,6 @@
-// import React from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { clearOrders } from "./Store"; // Make sure this action exists in your Redux slice
+import { clearOrders } from "./Store";
 import Swal from "sweetalert2";
 
 function OrdersHistory() {
@@ -33,66 +33,67 @@ function OrdersHistory() {
 
   return (
     <div className="container my-4">
+      {/* Heading */}
       <h2 className="text-center mb-4">🧾 Order History</h2>
 
+      {/* Empty state */}
       {orders.length === 0 ? (
         <p className="text-center text-muted">No orders yet.</p>
       ) : (
-        <div className="list-group">
+        <div className="row">
           {orders.map((purchase, index) => (
-            <div
-              key={index}
-              className="list-group-item mb-3 shadow-sm rounded"
-            >
-              <p>
-                <strong>📅 Date:</strong> {purchase.date}
-              </p>
-              <p>
-                <strong>💰 Total Amount:</strong> ₹
-                {purchase.totalPrice.toFixed(2)}
-              </p>
+            <div key={index} className="col-md-6 col-lg-4 mb-4">
+              <div className="card shadow-sm h-100 rounded-3">
+                <div className="card-body">
+                  {/* Order Date & Amount */}
+                  <h6 className="text-muted mb-2">
+                    📅 <strong>Date:</strong> {purchase.date}
+                  </h6>
+                  <h6 className="mb-3">
+                    💰 <strong>Total:</strong> ₹{purchase.totalPrice.toFixed(2)}
+                  </h6>
 
-              <ul className="list-unstyled">
-                {purchase.items.map((item, itemIndex) => (
-                  <li
-                    key={itemIndex}
-                    className="d-flex align-items-center border-bottom py-2"
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      style={{
-                        width: "60px",
-                        height: "60px",
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                        marginRight: "12px",
-                      }}
-                    />
-                    <div className="flex-grow-1">
-                      <p className="mb-1">
-                        <strong>{item.name}</strong>
-                      </p>
-                      <p className="mb-0 text-muted">
-                        {item.quantity} × ₹{item.price} = ₹
-                        {(item.price * item.quantity).toFixed(2)}
-                      </p>
+                  {/* Order Items */}
+                  {purchase.items.map((item, itemIndex) => (
+                    <div
+                      key={itemIndex}
+                      className="d-flex align-items-center mb-3 border rounded p-2"
+                    >
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="rounded"
+                        style={{
+                          width: "80px",
+                          height: "80px",
+                          objectFit: "cover",
+                          marginRight: "12px",
+                        }}
+                      />
+                      <div className="flex-grow-1">
+                        <p className="fw-bold mb-1">{item.name}</p>
+                        <p className="text-muted mb-0">
+                          {item.quantity} × ₹{item.price} = ₹
+                          {(item.price * item.quantity).toFixed(2)}
+                        </p>
+                      </div>
                     </div>
-                  </li>
-                ))}
-              </ul>
+                  ))}
+                </div>
+              </div>
             </div>
           ))}
         </div>
       )}
-       {orders.length > 0 && (
-        <div className="text-center mb-4">
-          <button className="btn btn-danger" onClick={handleClearOrders}>
+
+      {/* Clear Orders Button */}
+      {orders.length > 0 && (
+        <div className="text-center mt-4">
+          <button className="btn btn-danger px-4" onClick={handleClearOrders}>
             🗑️ Clear All Orders
           </button>
         </div>
       )}
-
     </div>
   );
 }

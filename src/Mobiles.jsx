@@ -96,11 +96,10 @@ function Mobiles() {
             <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
               <div className="card h-100 shadow-sm hover-shadow">
                 <img
-                  src={item.image}
-                  alt={item.name}
-                  className="card-img-top"
-                  style={{ height: "160px", objectFit: "cover" }}
-                />
+                    src={item.image}
+                    alt={item.name}
+                    className="card-img-top product-img"
+                  />
                 <div className="card-body text-center d-flex flex-column justify-content-between">
                   <h5>{item.name}</h5>
                   <p className="text-muted">{item.description}</p>
@@ -182,6 +181,15 @@ function Mobiles() {
             background-color: #ff4d4dcc;
             color: white;
           }
+            .product-img {
+              height: 220px;       /* consistent height */
+              width: 100%;         /* full width */
+              object-fit: contain; /* show the full image without cutting */
+              padding: 10px;       /* little spacing inside */
+              background-color: #f9f9f9; /* optional: light bg for contrast */
+              border-radius: 8px;  /* rounded look */
+            }
+
         `}
       </style>
     </div>

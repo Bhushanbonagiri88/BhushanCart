@@ -126,11 +126,10 @@ function MensClothing() {
                   className="card h-100 shadow-sm border-0 hover-shadow"
                   style={{ transition: "transform 0.3s" }}
                 >
-                  <img
+                 <img
                     src={item.image}
-                    className="card-img-top"
                     alt={item.name}
-                    style={{ height: "150px", objectFit: "cover" }}
+                    className="card-img-top product-img"
                   />
                   <div className="card-body d-flex flex-column justify-content-between text-center">
                     <div>
@@ -210,6 +209,14 @@ function MensClothing() {
             background-color: #dc3545cc;
             color: white;
           }
+            .product-img {
+              height: 220px;       /* consistent height */
+              width: 100%;         /* full width */
+              object-fit: contain; /* show the full image without cutting */
+              padding: 10px;       /* little spacing inside */
+              background-color: #f9f9f9; /* optional: light bg for contrast */
+              border-radius: 8px;  /* rounded look */
+            }
         `}
       </style>
     </>

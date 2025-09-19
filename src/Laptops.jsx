@@ -101,12 +101,11 @@ function Laptops() {
         {currentItems.map((item) => (
           <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
             <div className="card h-100 shadow-sm border-0 hover-shadow">
-              <img
-                src={item.image}
-                className="card-img-top"
-                alt={item.name}
-                style={{ height: "150px", objectFit: "cover" }}
-              />
+               <img
+                    src={item.image}
+                    alt={item.name}
+                    className="card-img-top product-img"
+                  />
               <div className="card-body d-flex flex-column justify-content-between text-center">
                 <div>
                   <h5 className="card-title">{item.name}</h5>
@@ -162,6 +161,30 @@ function Laptops() {
           </ul>
         </nav>
       )}
+      <style>
+        {`
+          .hover-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+          }
+          .btn-success:hover {
+            background-color: #28a745cc;
+          }
+          .btn-outline-danger:hover, .btn-danger:hover {
+            background-color: #ff4d4dcc;
+            color: white;
+          }
+            .product-img {
+              height: 220px;       /* consistent height */
+              width: 100%;         /* full width */
+              object-fit: contain; /* show the full image without cutting */
+              padding: 10px;       /* little spacing inside */
+              background-color: #f9f9f9; /* optional: light bg for contrast */
+              border-radius: 8px;  /* rounded look */
+            }
+
+        `}
+      </style>
     </div>
   );
 }
