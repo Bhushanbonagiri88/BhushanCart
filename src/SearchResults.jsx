@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -16,6 +16,14 @@ function SearchResults() {
   const kids = useSelector((state) => state.products?.kidsware || []);
   const shoes = useSelector((state) => state.products?.shoes || []);
   const slippers = useSelector((state) => state.products?.slippers || []);
+  const mob = useSelector((state) => state.products?.mobiles || []);
+  const lap = useSelector((state) => state.products?.laptops || []);
+  const cam = useSelector((state) => state.products?.cameras || []);
+  const samrt = useSelector((state) => state.products?.smartHome || []);
+  const cric = useSelector ((state) => state.products?.cricket || []);
+  const foot = useSelector ((state) => state.products?.football || []);
+  const gro = useSelector ((state) => state.products?.grocery || []);
+
 
   // ✅ Combine all products
   const allProducts = [
@@ -27,6 +35,13 @@ function SearchResults() {
   ...kids.map(p => ({ ...p, category: "kidsware" })),
   ...shoes.map(p => ({ ...p, category: "shoes" })),
   ...slippers.map(p => ({ ...p, category: "slippers" })),
+  ...mob.map(p => ({ ...p, category: "mobiles" })),
+  ...lap.map(p => ({ ...p, category: "laptops" })),
+  ...cam.map(p => ({ ...p, category: "cameras" })),
+  ...samrt.map(p => ({ ...p, category: "smart home" })),
+  ...cric.map(p => ({ ...p, category: "cricket" })),
+  ...foot.map(p => ({ ...p, category: "football" })),
+  ...gro.map(p => ({ ...p, category: "grocery" })),
 ];
 
 

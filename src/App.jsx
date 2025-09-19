@@ -312,6 +312,7 @@ import Cricket from "./Cricket";
 import Footwear from "./Footwear";
 import Kitchen from "./Kitchen";
 import { tr } from "framer-motion/client";
+import LocationFinder from "./LocationFinder";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -385,6 +386,10 @@ function App() {
           >
             <img src="/images/Untitled-1.png" height={50} alt="Logo" />
           </Link>
+
+         <small className="text-muted mt-1">
+         <LocationFinder />
+  </small>
 
           {/* Search Bar */}
           <form
@@ -543,6 +548,7 @@ function App() {
           <Route path="/sports" element={<Sports />} />
           <Route path="/sports/cricket" element={<Cricket />} />
           <Route path="/sports/football" element={<FootBall />} />
+          <Route path ="/location" element={<LocationFinder />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </div>
