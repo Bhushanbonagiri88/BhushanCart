@@ -246,7 +246,7 @@ function Veg() {
         {currentItems.map((item) => {
           const inWishlist = wishlistItems.find((w) => w.id === item.id);
           return (
-            <div className="col-6 col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
+            <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
               <div className="card h-100 shadow-sm border-0 hover-shadow">
                 <img
                   src={item.image}
@@ -261,7 +261,7 @@ function Veg() {
                     <p className="card-text text-muted">{item.description}</p>
                     <span className="fw-bold">{formatPrice(item.price)}</span>
                   </div>
-                  <div className="d-flex flex-column flex-sm-row gap-2 mt-2 .product-btn ">
+                  <div className="d-flex gap-2 mt-2 ">
                     <button
                       className="btn btn-success flex-fill"
                       onClick={() => handleAddToCart(item)}

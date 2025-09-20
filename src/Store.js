@@ -145,16 +145,16 @@ kidsWear: [
 slippers: [
   { id: 801, name: "Men's Flip Flops", price: 400, image: "/footwear/mens_flipflops.jpg", description: "Casual rubber flip flops for men" },
   { id: 802, name: "Women's House Slippers", price: 600, image: "/footwear/womens_slippers.jpg", description: "Soft and cozy indoor slippers for women" },
-  { id: 803, name: "Kids Cartoon Slippers", price: 350, image: "/footwear/kids_cartoon_slippers.jpg", description: "Cute cartoon printed slippers for kids" },
+  { id: 803, name: "Kids Cartoon Slippers", price: 350, image: "/footwear/kids_cartoon_slippers.webp", description: "Cute cartoon printed slippers for kids" },
   { id: 804, name: "Men's Leather Slippers", price: 900, image: "/footwear/mens_leather_slippers.jpg", description: "Durable leather slippers for men" },
   { id: 805, name: "Women's Beach Slippers", price: 500, image: "/footwear/womens_beach_slippers.jpg", description: "Colorful beach wear slippers for women" },
   { id: 806, name: "Kids Animal Slippers", price: 450, image: "/footwear/kids_animal_slippers.jpg", description: "Soft animal design slippers for kids" },
-  { id: 807, name: "Men's Sports Slippers", price: 650, image: "/footwear/mens_sports_slippers.jpg", description: "Lightweight sports slippers for men" },
-  { id: 808, name: "Women's Fancy Slippers", price: 750, image: "/footwear/womens_fancy_slippers.jpg", description: "Trendy fancy slippers for women" },
-  { id: 809, name: "Kids LED Slippers", price: 550, image: "/footwear/kids_led_slippers.jpg", description: "Fun slippers with LED lights for kids" },
+  { id: 807, name: "Men's Sports Slippers", price: 650, image: "/footwear/mens_sports_slippers.webp", description: "Lightweight sports slippers for men" },
+  { id: 808, name: "Women's Fancy Slippers", price: 750, image: "/footwear/womens_fancy_slippers.jpeg", description: "Trendy fancy slippers for women" },
+  { id: 809, name: "Kids LED Slippers", price: 550, image: "/footwear/kids_led_slippers.webp", description: "Fun slippers with LED lights for kids" },
   { id: 810, name: "Men's Comfort Slippers", price: 700, image: "/footwear/mens_comfort_slippers.jpg", description: "Soft cushioned slippers for men" },
   { id: 811, name: "Women's Stylish Slippers", price: 800, image: "/footwear/womens_stylish_slippers.jpg", description: "Elegant slippers for casual outings" },
-  { id: 812, name: "Kids Winter Slippers", price: 600, image: "/footwear/kids_winter_slippers.jpg", description: "Warm and fluffy slippers for kids" }
+  { id: 812, name: "Kids Winter Slippers", price: 600, image: "/footwear/kids_winter_slippers.avif", description: "Warm and fluffy slippers for kids" }
 ],
 shoes: [
   { id: 901, name: "Men's Running Shoes", price: 2200, image: "/footwear/mens_running_shoes.jpg", description: "Lightweight running shoes for men" },
@@ -422,6 +422,24 @@ const cartSlice = createSlice({
 });
 
 // ---------------- Wishlist Slice ----------------
+// const wishlistSlice = createSlice({
+//   name: "wishlist",
+//   initialState: initialStateWishlist,
+//   reducers: {
+//     addToWishlist(state, action) {
+//       const exists = state.find((item) => item.id === action.payload.id);
+//       if (!exists) {
+//         state.push(action.payload);
+//       }
+//     },
+//     removeFromWishlist(state, action) {
+//       return state.filter((item) => item.id !== action.payload.id);
+//     },
+//     clearWishlist() {
+//       return [];
+//     },
+//   },
+// });
 const wishlistSlice = createSlice({
   name: "wishlist",
   initialState: initialStateWishlist,
@@ -433,13 +451,14 @@ const wishlistSlice = createSlice({
       }
     },
     removeFromWishlist(state, action) {
-      return state.filter((item) => item.id !== action.payload.id);
+      return state.filter((item) => item.id !== action.payload);
     },
     clearWishlist() {
       return [];
     },
   },
 });
+
 
 const ordersSlice = createSlice({
   name: "orders",
