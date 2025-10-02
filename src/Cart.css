@@ -1,92 +1,231 @@
-/* Cart Card */
-.cart-card {
-  transition: all 0.3s ease;
-  gap: 1rem;
-}
-.cart-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+/* ============================= */
+/* ✅ Navbar Gap Fix */
+/* ============================= */
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", sans-serif;
 }
 
-/* Product Image */
+header,
+.navbar,
+.fixed-top {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ============================= */
+/* 🌐 Cart Page Layout with Left Space */
+/* ============================= */
+.cart-page {
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding: 20px 20px 20px 60px; /* left space */
+}
+
+/* For larger screens, more left spacing */
+@media (min-width: 992px) {
+  .cart-page {
+    padding-left: 100px;
+    padding-right: 60px;
+  }
+}
+
+/* 🛒 Heading */
+.cart-page h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* 📦 Cart Item Card */
+.cart-card {
+  display: flex;
+  gap: 1.5rem;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+.cart-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+/* 🖼️ Product Image */
 .cart-product-img {
   width: 100px;
   height: 100px;
   object-fit: cover;
-  border-radius: 10px;
-}
-
-/* Quantity Buttons */
-.quantity-btn {
-  width: 28px;
-  height: 28px;
-  font-size: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-/* Remove Button */
-.remove-btn {
-  padding: 5px 10px;
-  font-size: 13px;
-}
-
-/* Checkout Box */
-.checkout-box {
   border-radius: 12px;
-  background: #fff;
   border: 1px solid #eee;
-  padding: 15px;
-  max-width: 300px; /* Reduced width */
-  margin: 0 auto;
 }
 
-/* Checkout Box Heading */
-.checkout-box h4, .checkout-box h5 {
-  font-size: 16px;
-  margin-bottom: 10px;
+/* ✍️ Product Info */
+.cart-card h5 {
+  font-size: 17px;
   font-weight: 600;
+  color: #111;
+}
+.cart-card p {
+  font-size: 14px;
+  margin: 3px 0;
+  color: #444;
 }
 
-/* QR Section */
-.qr-code {
+/* ➕➖ Quantity Controls */
+.quantity-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #f0f0f0; /* better visible than pure white */
+  font-size: 16px;
+  transition: all 0.2s;
+}
+.quantity-btn:hover {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+.quantity-text {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 600;
+  color: #222;
+}
+
+/* ❌ Remove Button */
+.remove-btn {
+  font-size: 13px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  background: #fff;
+}
+.remove-btn:hover {
+  background: #dc3545;
+  color: #fff;
+}
+
+/* 💳 Checkout Box */
+.checkout-box {
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  max-width: 380px;
+  margin: 0 auto 30px;
+}
+.checkout-box h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.checkout-box h5 {
+  font-size: 16px;
+  font-weight: 600;
   margin-top: 10px;
-  padding: 10px;
-  border: 1px dashed #bbb;
+}
+
+/* 🏷️ Modern Discount Buttons */
+.discount-btn {
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  border-radius: 50px; /* pill shape */
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  color: #fff; /* visible white text */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(45deg, #6c63ff, #8e54e9);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+  margin: 4px;
+}
+
+.discount-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
+}
+
+.discount-btn:active,
+.discount-btn.active {
+  transform: translateY(0) scale(1);
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+  opacity: 0.9;
+}
+
+/* 🎟️ Coupon Input */
+.checkout-box input {
   border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+}
+.checkout-box input:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 8px rgba(108, 99, 255, 0.25);
+}
+
+/* 📱 QR Payment */
+.qr-code {
+  margin-top: 15px;
+  padding: 12px;
+  border: 1px dashed #bbb;
+  border-radius: 12px;
   background: #f9f9f9;
   text-align: center;
 }
 .qr-code h6 {
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 8px;
   font-weight: 500;
 }
 
-/* Mobile Responsive */
+/* 🔘 Payment Buttons */
+.checkout-box .btn {
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.25s;
+}
+.checkout-box .btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Clear Cart Button */
+.cart-page .btn-danger {
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: all 0.25s;
+}
+.cart-page .btn-danger:hover {
+  background: #b02a37;
+  transform: translateY(-2px);
+}
+
+/* 📱 Mobile Responsive */
 @media (max-width: 768px) {
   .cart-card {
     flex-direction: column;
     align-items: center;
+    text-align: center;
   }
   .cart-product-img {
     width: 90px;
     height: 90px;
   }
-  .quantity-btn {
-    width: 24px;
-    height: 24px;
-    font-size: 13px;
-  }
-  .remove-btn {
-    font-size: 12px;
-    padding: 4px 8px;
-  }
   .checkout-box {
-    max-width: 250px;
-    padding: 12px;
+    max-width: 100%;
+    padding: 20px;
+    margin-left: 10px; /* small left margin for mobile */
   }
 }
 
@@ -96,20 +235,16 @@
     height: 80px;
   }
   .quantity-btn {
-    width: 20px;
-    height: 20px;
-    font-size: 12px;
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
   }
   .remove-btn {
-    font-size: 11px;
-    padding: 3px 6px;
+    font-size: 12px;
+    padding: 4px 8px;
   }
   .checkout-box {
-    max-width: 220px;
-    padding: 10px;
+    padding: 15px;
+    margin-left: 5px; /* minimal left spacing on small screens */
   }
-}
-.discount-btn {
-  padding: 4px 10px; /* smaller height and width */
-  font-size: 13px;   /* slightly smaller text */
 }

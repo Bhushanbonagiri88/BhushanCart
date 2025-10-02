@@ -1,49 +1,380 @@
+// // VoiceAssistant.js
+// import React, { useState, useRef, useCallback, useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { addToCart, addToWishlist, removeFromWishlist } from "./Store";
+// import { useNavigate } from "react-router-dom";
+
+// // ✅ Make sure you have Bootstrap Icons installed:
+// // npm install bootstrap-icons
+// // import "bootstrap-icons/font/bootstrap-icons.css"; (in index.js or App.js)
+
+// export default function VoiceAssistant({
+//   products,
+//   triggerToast,
+//   continuous = false,
+//   userName = "Guest",
+// }) {
+//   const [listening, setListening] = useState(false);
+//   const [speechEnabled, setSpeechEnabled] = useState(true);
+//   const recognitionRef = useRef(null);
+//   const intentionallyStoppedRef = useRef(false);
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+//   const { currentUsername } = useSelector((state) => state.registerUser);
+
+//   const speakMessage = (msg) => {
+//     if (!speechEnabled || !msg) return;
+//     const utterance = new SpeechSynthesisUtterance(msg);
+//     utterance.lang = "en-IN";
+//     window.speechSynthesis.speak(utterance);
+//   };
+
+//   const showMessage = (msg) => {
+//     if (typeof triggerToast === "function") triggerToast(msg);
+//     else alert(msg);
+//     speakMessage(msg);
+//   };
+
+//   useEffect(() => {
+//     const welcomeMsg = `Welcome ${
+//       currentUsername || userName
+//     }, how can I help you today?`;
+//     speakMessage(welcomeMsg);
+//   }, [currentUsername, userName, speechEnabled]);
+
+//   const getAllProducts = useCallback(() => {
+//     if (!products) return [];
+//     return Array.isArray(products) ? products : Object.values(products).flat();
+//   }, [products]);
+
+//   const findProductMatchingTranscript = (transcript) => {
+//     const prods = getAllProducts();
+//     if (!transcript) return null;
+//     const t = transcript.toLowerCase();
+//     let match = prods.find((p) => p.name && t.includes(p.name.toLowerCase()));
+//     if (match) return match;
+
+//     match = prods.find((p) => {
+//       const words = (p.name || "")
+//         .toLowerCase()
+//         .split(/\s+/)
+//         .filter((w) => w.length > 2);
+//       return words.some((w) => t.includes(w));
+//     });
+//     if (match) return match;
+
+//     const idMatch = transcript.match(/\b(\d{2,5})\b/);
+//     if (idMatch) {
+//       const id = Number(idMatch[1]);
+//       match = prods.find((p) => p.id === id);
+//       if (match) return match;
+//     }
+
+//     return null;
+//   };
+
+//   const categoryRoutes = {
+//     veg: "/kitchen/veg",
+//     dairy: "/kitchen/dairy",
+//     groceries: "/kitchen/groceries",
+//     kitchen: "/kitchen",
+//     mobiles: "/electronics/mobiles",
+//     laptops: "/electronics/laptops",
+//     cameras: "/electronics/cameras",
+//     smarthome: "/electronics/smarthome",
+//     electronics: "/electronics",
+//     menswear: "/clothing/mensclothing",
+//     womenswear: "/clothing/womensclothing",
+//     kidswear: "/clothing/kidsware",
+//     clothing: "/clothing",
+//     slippers: "/footware/slippers",
+//     shoes: "/footware/shoes",
+//     footware: "/footware",
+//     cricket: "/sports/cricket",
+//     football: "/sports/football",
+//     sports: "/sports",
+//   };
+
+//   const findCategoryMatchingTranscript = (transcript) => {
+//     if (!transcript) return null;
+//     const t = transcript.toLowerCase();
+//     return (
+//       Object.keys(categoryRoutes).find((k) => t.includes(k.toLowerCase())) ||
+//       null
+//     );
+//   };
+
+//   const stopRecognition = () => {
+//     intentionallyStoppedRef.current = true;
+//     if (recognitionRef.current) {
+//       try {
+//         recognitionRef.current.stop();
+//       } catch (e) {}
+//       recognitionRef.current = null;
+//     }
+//     setListening(false);
+//     showMessage("Voice recognition stopped.");
+//   };
+
+//   const startRecognition = () => {
+//     const SpeechRecognition =
+//       window.SpeechRecognition || window.webkitSpeechRecognition;
+//     if (!SpeechRecognition) {
+//       showMessage("Voice recognition not supported in this browser");
+//       return;
+//     }
+
+//     intentionallyStoppedRef.current = false;
+//     if (recognitionRef.current) {
+//       try {
+//         recognitionRef.current.stop();
+//       } catch (e) {}
+//       recognitionRef.current = null;
+//     }
+
+//     const recognition = new SpeechRecognition();
+//     recognition.lang = "en-IN";
+//     recognition.interimResults = false;
+//     recognition.continuous = !!continuous;
+
+//     recognition.onstart = () => {
+//       setListening(true);
+//       showMessage("Listening...");
+//     };
+
+//     recognition.onresult = (event) => {
+//       const results = Array.from(event.results)
+//         .map((r) => r[0].transcript)
+//         .join(" ")
+//         .toLowerCase()
+//         .trim();
+
+//       console.log("Heard:", results);
+
+//       // Category navigation
+//       const matchedCategory = findCategoryMatchingTranscript(results);
+//       if (matchedCategory && categoryRoutes[matchedCategory]) {
+//         navigate(categoryRoutes[matchedCategory]);
+//         showMessage(`Showing ${matchedCategory} products...`);
+//         return;
+//       }
+
+//       // Cart/Wishlist/Checkout
+//       if (/\b(cart|open cart|show cart)\b/.test(results)) {
+//         navigate("/cart");
+//         showMessage("Opening your cart...");
+//         return;
+//       }
+//       if (/\b(wishlist|open wishlist|show wishlist)\b/.test(results)) {
+//         navigate("/wishlist");
+//         showMessage("Opening your wishlist...");
+//         return;
+//       }
+//       if (/\b(buy now|buy|checkout|place order)\b/.test(results)) {
+//         navigate("/buynow");
+//         showMessage("Taking you to Buy Now...");
+//         return;
+//       }
+
+//       // Add to cart
+//       const addCartMatch = results.match(
+//         /\b(add|put|buy)\s+(?:the\s+)?(.+?)\s*(?:to\s+cart|in cart)?\b/
+//       );
+//       if (addCartMatch) {
+//         const productPhrase = addCartMatch[2].trim();
+//         const found = findProductMatchingTranscript(productPhrase);
+//         if (found) {
+//           dispatch(addToCart(found));
+//           showMessage(`${found.name} added to cart`);
+//         } else showMessage("Product not found to add to cart");
+//         return;
+//       }
+
+//       const foundProduct = findProductMatchingTranscript(results);
+//       if (foundProduct) {
+//         dispatch(addToCart(foundProduct));
+//         showMessage(`${foundProduct.name} added to cart`);
+//       } else showMessage("No matching product or category found");
+
+//       if (!continuous) try { recognition.stop(); } catch (e) {}
+//     };
+
+//     recognition.onerror = (event) => {
+//       const err = event?.error || "error";
+//       if (err === "not-allowed" || err === "permission-denied") {
+//         showMessage("Microphone permission denied. Please allow mic access.");
+//       } else if (err === "no-speech") {
+//         showMessage("I didn't catch that. Try again.");
+//       } else showMessage("Voice recognition error. Try again.");
+//       setListening(false);
+//     };
+
+//     recognition.onend = () => {
+//       recognitionRef.current = null;
+//       setListening(false);
+//       if (continuous && !intentionallyStoppedRef.current) {
+//         setTimeout(() => {
+//           if (!intentionallyStoppedRef.current) startRecognition();
+//         }, 300);
+//       }
+//     };
+
+//     recognitionRef.current = recognition;
+//     try {
+//       recognition.start();
+//     } catch (e) {
+//       showMessage("Could not start voice recognition.");
+//     }
+//   };
+
+//   const handleClick = () => {
+//     if (listening) stopRecognition();
+//     else startRecognition();
+//   };
+
+//   // ---- INLINE STYLES ----
+//   const containerStyle = {
+//     display: "flex",
+//     alignItems: "center",
+//     gap: "12px",
+//     fontSize: "1.6rem",
+//     cursor: "pointer",
+//   };
+
+//   const iconStyle = {
+//     transition: "transform 0.2s",
+//   };
+
+//   return (
+//     <div style={containerStyle}>
+//       {/* Mic / Stop Mic */}
+//       <i
+//         className={`bi ${listening ? "bi-mic-mute-fill text-danger" : "bi-mic-fill text-success"}`}
+//         style={iconStyle}
+//         title={listening ? "Stop Voice Assistant" : "Start Voice Assistant"}
+//         onClick={handleClick}
+//         onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.3)")}
+//         onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+//       ></i>
+
+//       {/* Mute / Unmute Speech */}
+//       <i
+//         className={`bi ${speechEnabled ? "bi-volume-up-fill text-primary" : "bi-volume-mute-fill text-secondary"}`}
+//         style={iconStyle}
+//         title={speechEnabled ? "Mute Voice" : "Unmute Voice"}
+//         onClick={() => setSpeechEnabled((prev) => !prev)}
+//         onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.3)")}
+//         onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+//       ></i>
+//     </div>
+//   );
+// }
 // VoiceAssistant.js
-import React, { useState, useRef, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "./Store";
 import { useNavigate } from "react-router-dom";
 
+// Make sure Bootstrap Icons are imported in index.js or App.js
+// import "bootstrap-icons/font/bootstrap-icons.css";
+
 export default function VoiceAssistant({
   products,
-  triggerToast,      // optional: function to show header toast (string)
-  continuous = false  // optional: if true, toggle continuous listening
+  triggerToast,
+  continuous = false,
+  userName = "Guest",
 }) {
   const [listening, setListening] = useState(false);
+  const [speechEnabled, setSpeechEnabled] = useState(true);
   const recognitionRef = useRef(null);
   const intentionallyStoppedRef = useRef(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { currentUsername } = useSelector((state) => state.registerUser);
+
+  const speakMessage = (msg) => {
+    if (!speechEnabled || !msg) return;
+    const utterance = new SpeechSynthesisUtterance(msg);
+    utterance.lang = "en-IN";
+    window.speechSynthesis.speak(utterance);
+  };
 
   const showMessage = (msg) => {
     if (typeof triggerToast === "function") triggerToast(msg);
     else alert(msg);
+    speakMessage(msg);
   };
 
-  // flatten products if state.products is an object of categories
+  // --- Welcome message only once when user enters ---
+  useEffect(() => {
+    const welcomeShown = sessionStorage.getItem("welcomeShown");
+    if (!welcomeShown) {
+      const welcomeMsg = `Welcome ${currentUsername || userName}, how can I help you today?`;
+      speakMessage(welcomeMsg);
+      sessionStorage.setItem("welcomeShown", "true");
+    }
+  }, [currentUsername, userName, speechEnabled]);
+
   const getAllProducts = useCallback(() => {
     if (!products) return [];
-    return Array.isArray(products)
-      ? products
-      : Object.values(products).flat();
+    return Array.isArray(products) ? products : Object.values(products).flat();
   }, [products]);
 
   const findProductMatchingTranscript = (transcript) => {
     const prods = getAllProducts();
-    transcript = transcript.toLowerCase();
+    if (!transcript) return null;
+    const t = transcript.toLowerCase();
 
-    // 1) direct includes
-    let match = prods.find(
-      (p) => p.name && transcript.includes(p.name.toLowerCase())
-    );
+    let match = prods.find((p) => p.name && t.includes(p.name.toLowerCase()));
     if (match) return match;
 
-    // 2) partial word match (any significant word)
     match = prods.find((p) => {
-      const words = (p.name || "").toLowerCase().split(/\s+/).filter(w => w.length > 2);
-      return words.some((w) => transcript.includes(w));
+      const words = (p.name || "")
+        .toLowerCase()
+        .split(/\s+/)
+        .filter((w) => w.length > 2);
+      return words.some((w) => t.includes(w));
     });
-    return match;
+    if (match) return match;
+
+    const idMatch = transcript.match(/\b(\d{2,5})\b/);
+    if (idMatch) {
+      const id = Number(idMatch[1]);
+      match = prods.find((p) => p.id === id);
+      if (match) return match;
+    }
+
+    return null;
+  };
+
+  const categoryRoutes = {
+    veg: "/kitchen/veg",
+    dairy: "/kitchen/dairy",
+    groceries: "/kitchen/groceries",
+    kitchen: "/kitchen",
+    mobiles: "/electronics/mobiles",
+    laptops: "/electronics/laptops",
+    cameras: "/electronics/cameras",
+    smarthome: "/electronics/smarthome",
+    electronics: "/electronics",
+    menswear: "/clothing/mensclothing",
+    womenswear: "/clothing/womensclothing",
+    kidswear: "/clothing/kidsware",
+    clothing: "/clothing",
+    slippers: "/footware/slippers",
+    shoes: "/footware/shoes",
+    footware: "/footware",
+    cricket: "/sports/cricket",
+    football: "/sports/football",
+    sports: "/sports",
+  };
+
+  const findCategoryMatchingTranscript = (transcript) => {
+    if (!transcript) return null;
+    const t = transcript.toLowerCase();
+    return (
+      Object.keys(categoryRoutes).find((k) => t.includes(k.toLowerCase())) || null
+    );
   };
 
   const stopRecognition = () => {
@@ -51,135 +382,169 @@ export default function VoiceAssistant({
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
-      } catch (e) {
-        // ignore
-      }
+      } catch (e) {}
+      recognitionRef.current = null;
     }
+    setListening(false);
+    showMessage("Voice recognition stopped.");
   };
 
   const startRecognition = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
-
     if (!SpeechRecognition) {
-      showMessage("❌ Voice recognition not supported in this browser");
+      showMessage("Voice recognition not supported in this browser");
       return;
     }
 
-    // Reset flag
     intentionallyStoppedRef.current = false;
-
-    // If there is an existing instance, stop it first
     if (recognitionRef.current) {
-      try { recognitionRef.current.stop(); } catch (e) {}
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {}
       recognitionRef.current = null;
     }
 
     const recognition = new SpeechRecognition();
     recognition.lang = "en-IN";
     recognition.interimResults = false;
-    recognition.continuous = !!continuous; // when continuous = true keep listening
+    recognition.continuous = !!continuous;
 
     recognition.onstart = () => {
       setListening(true);
-      showMessage("🎧 Listening...");
+      showMessage("Listening...");
     };
 
     recognition.onresult = (event) => {
-      // combine results (handles continuous mode too)
       const results = Array.from(event.results)
         .map((r) => r[0].transcript)
         .join(" ")
         .toLowerCase()
         .trim();
 
-      console.log("🎤 Heard:", results);
+      console.log("Heard:", results);
 
-      // navigation commands
-      if (results.includes("cart")) {
+      // Category navigation
+      const matchedCategory = findCategoryMatchingTranscript(results);
+      if (matchedCategory && categoryRoutes[matchedCategory]) {
+        navigate(categoryRoutes[matchedCategory]);
+        showMessage(`Showing ${matchedCategory} products...`);
+        return;
+      }
+
+      // Cart/Wishlist/Checkout
+      if (/\b(cart|open cart|show cart)\b/.test(results)) {
         navigate("/cart");
-        showMessage("🛒 Opening your cart...");
-      } else if (results.includes("wishlist")) {
+        showMessage("Opening your cart...");
+        return;
+      }
+      if (/\b(wishlist|open wishlist|show wishlist)\b/.test(results)) {
         navigate("/wishlist");
-        showMessage("❤️ Opening your wishlist...");
-      } else if (results.includes("buy") || results.includes("shop")) {
+        showMessage("Opening your wishlist...");
+        return;
+      }
+      if (/\b(buy now|buy|checkout|place order)\b/.test(results)) {
         navigate("/buynow");
-        showMessage("🛍️ Taking you to Buy Now...");
-      } else {
-        const foundProduct = findProductMatchingTranscript(results);
-        if (foundProduct) {
-          dispatch(addToCart(foundProduct));
-          showMessage(`✅ ${foundProduct.name} added to cart 🛒`);
-        } else {
-          showMessage("❌ Product not found 🔎");
-        }
+        showMessage("Taking you to Buy Now...");
+        return;
       }
 
-      // if not continuous, stop after first result
-      if (!continuous) {
-        try { recognition.stop(); } catch (e) {}
+      // Add to cart
+      const addCartMatch = results.match(
+        /\b(add|put|buy)\s+(?:the\s+)?(.+?)\s*(?:to\s+cart|in cart)?\b/
+      );
+      if (addCartMatch) {
+        const productPhrase = addCartMatch[2].trim();
+        const found = findProductMatchingTranscript(productPhrase);
+        if (found) {
+          dispatch(addToCart(found));
+          showMessage(`${found.name} added to cart`);
+        } else showMessage("Product not found to add to cart");
+        return;
       }
+
+      const foundProduct = findProductMatchingTranscript(results);
+      if (foundProduct) {
+        dispatch(addToCart(foundProduct));
+        showMessage(`${foundProduct.name} added to cart`);
+      } else showMessage("No matching product or category found");
+
+      if (!continuous) try { recognition.stop(); } catch (e) {}
     };
 
     recognition.onerror = (event) => {
-      console.error("Speech recognition error:", event);
       const err = event?.error || "error";
       if (err === "not-allowed" || err === "permission-denied") {
-        showMessage("⚠️ Microphone permission denied. Please allow mic access.");
+        showMessage("Microphone permission denied. Please allow mic access.");
       } else if (err === "no-speech") {
-        showMessage("⚠️ I didn't catch that. Try again 🎙️");
-      } else {
-        showMessage("⚠️ Voice recognition error. Try again.");
-      }
+        showMessage("I didn't catch that. Try again.");
+      } else showMessage("Voice recognition error. Try again.");
+      setListening(false);
     };
 
     recognition.onend = () => {
       recognitionRef.current = null;
       setListening(false);
-      // If continuous mode and not intentionally stopped, attempt to restart to remain resilient
       if (continuous && !intentionallyStoppedRef.current) {
-        // short delay to avoid rapid restart loops
         setTimeout(() => {
           if (!intentionallyStoppedRef.current) startRecognition();
-        }, 250);
+        }, 300);
       }
     };
 
     recognitionRef.current = recognition;
-
     try {
       recognition.start();
     } catch (e) {
-      console.error("start error", e);
-      showMessage("⚠️ Could not start voice recognition.");
+      showMessage("Could not start voice recognition.");
     }
   };
 
   const handleClick = () => {
-    if (continuous) {
-      // toggle in continuous mode
-      if (listening) {
-        stopRecognition();
-      } else {
-        startRecognition();
-      }
-    } else {
-      // single-shot: always start fresh
-      startRecognition();
-    }
+    if (listening) stopRecognition();
+    else startRecognition();
+  };
+
+  // ---- INLINE STYLES ----
+  const containerStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    cursor: "pointer",
+    fontSize: "1.2rem", // smaller icons
+  };
+
+  const iconStyle = {
+    transition: "transform 0.2s",
   };
 
   return (
-   <button
-  type="button"
-  className="btn btn-outline-primary ms-2 d-flex align-items-center justify-content-center rounded-circle"
-  style={{ width: "28px", height: "28px", fontSize: "12px", lineHeight: 1 }}
-  onClick={handleClick}
-  aria-pressed={listening}
-  title="Voice Assistant"
->
-  {listening ? "🎙️" : "🎤"}
-</button>
+    <div style={containerStyle}>
+      {/* Mic / Stop Mic */}
+      <i
+        className={`bi ${
+          listening ? "bi-mic-mute-fill text-danger" : "bi-mic-fill text-success"
+        }`}
+        style={iconStyle}
+        title={listening ? "Stop Voice Assistant" : "Start Voice Assistant"}
+        onClick={handleClick}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.3)")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+      ></i>
 
+      {/* Mute / Unmute Speech */}
+      <i
+        className={`bi ${
+          speechEnabled
+            ? "bi-volume-up-fill text-primary"
+            : "bi-volume-mute-fill text-secondary"
+        }`}
+        style={iconStyle}
+        title={speechEnabled ? "Mute Voice" : "Unmute Voice"}
+        onClick={() => setSpeechEnabled((prev) => !prev)}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.3)")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+      ></i>
+    </div>
   );
 }
