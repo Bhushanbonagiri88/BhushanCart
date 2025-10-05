@@ -10,14 +10,14 @@ function Footwear() {
       image: "/images/slippers.jpg",
       gradient: "linear-gradient(45deg, #36d1dc, #5b86e5)",
       description: "Comfortable slippers for casual and home use.",
-      path: "/footwear/slippers",
+      path: "/footware/slippers",
     },
     {
       name: "Shoes",
       image: "/images/shoes1.jpg",
       gradient: "linear-gradient(45deg, #f7971e, #ffd200)",
       description: "Trendy and durable shoes for every occasion.",
-      path: "/footwear/shoes",
+      path: "/footware/shoes",
     },
   ];
 

@@ -43,29 +43,6 @@
   100% { transform: translateX(-100%); }
 }
 
-/* 🔹 Wishlist Floating Button */
-/* .wishlist-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 18px;
-  line-height: 1;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s, background 0.2s, color 0.2s;
-}
-
-.wishlist-btn:hover {
-  transform: scale(1.2);
-  background: #ffe6e6;
-  color: red;
-} */
-
 /* 🔹 Product Cards */
 .product-card {
   min-height: 380px;

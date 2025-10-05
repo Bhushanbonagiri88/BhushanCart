@@ -27,6 +27,7 @@ function Groceries() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
+  // ✅ Add to Cart
   const handleAddToCart = (item) => {
     dispatch(addToCart(item));
     Swal.fire({
@@ -38,10 +39,14 @@ function Groceries() {
     });
   };
 
+  // ✅ Wishlist handler (category-specific)
   const handleWishlist = (item) => {
-    const exists = wishlistItems.find((w) => w.id === item.id);
-    if (exists) {
-      dispatch(removeFromWishlist(item));
+    const existing = wishlistItems.find(
+      (w) => w.id === item.id && w.category === "groceries"
+    );
+
+    if (existing) {
+      dispatch(removeFromWishlist({ ...item, category: "groceries" }));
       Swal.fire({
         icon: "error",
         title: "Removed ❌",
@@ -50,7 +55,7 @@ function Groceries() {
         timer: 1200,
       });
     } else {
-      dispatch(addToWishlist(item));
+      dispatch(addToWishlist({ ...item, category: "groceries" }));
       Swal.fire({
         icon: "info",
         title: "Wishlist ❤️",
@@ -65,60 +70,39 @@ function Groceries() {
     <>
       <h1 className="text-primary text-center my-4"> Groceries </h1>
 
-      {/* ✅ Mobile-friendly filter buttons */}
+      {/* ✅ Price Filter Buttons */}
       <div className="container mb-4">
         <div className="d-flex flex-wrap justify-content-center gap-2">
-          <button
-            className={`btn ${
-              priceFilter === "all" ? "btn-primary" : "btn-outline-primary"
-            }`}
-            onClick={() => {
-              setPriceFilter("all");
-              setCurrentPage(1);
-            }}
-          >
-            All
-          </button>
-          <button
-            className={`btn ${
-              priceFilter === "low" ? "btn-primary" : "btn-outline-primary"
-            }`}
-            onClick={() => {
-              setPriceFilter("low");
-              setCurrentPage(1);
-            }}
-          >
-            Below ₹100
-          </button>
-          <button
-            className={`btn ${
-              priceFilter === "mid" ? "btn-primary" : "btn-outline-primary"
-            }`}
-            onClick={() => {
-              setPriceFilter("mid");
-              setCurrentPage(1);
-            }}
-          >
-            ₹100 – ₹300
-          </button>
-          <button
-            className={`btn ${
-              priceFilter === "high" ? "btn-primary" : "btn-outline-primary"
-            }`}
-            onClick={() => {
-              setPriceFilter("high");
-              setCurrentPage(1);
-            }}
-          >
-            Above ₹300
-          </button>
+          {["all", "low", "mid", "high"].map((filter) => (
+            <button
+              key={filter}
+              className={`btn ${
+                priceFilter === filter ? "btn-primary" : "btn-outline-primary"
+              }`}
+              onClick={() => {
+                setPriceFilter(filter);
+                setCurrentPage(1);
+              }}
+            >
+              {filter === "all"
+                ? "All"
+                : filter === "low"
+                ? "Below ₹100"
+                : filter === "mid"
+                ? "₹100 – ₹300"
+                : "Above ₹300"}
+            </button>
+          ))}
         </div>
       </div>
 
+      {/* ✅ Product Cards */}
       <div className="container-fluid">
         <div className="row">
           {currentItems.map((item) => {
-            const inWishlist = wishlistItems.find((w) => w.id === item.id);
+            const inWishlist = wishlistItems.find(
+              (w) => w.id === item.id && w.category === "groceries"
+            );
             return (
               <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={item.id}>
                 <div
@@ -197,6 +181,7 @@ function Groceries() {
         </div>
       </div>
 
+      {/* ✅ Styling */}
       <style>
         {`
           .hover-shadow:hover {
